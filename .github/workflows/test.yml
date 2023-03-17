@@ -9,9 +9,8 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
-        with:
-          submodules: recursive
-          token: ${{ secrets.PAT }}
+        
+          
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -31,8 +30,7 @@ jobs:
       - name: 签名 APK
         run: |
            jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
-            -keystore https://raw.githubusercontent.com/wenxin8/private/main/secret/my-release-key.jks
-            #${{ secrets.KEYSTORE }} \
+            -keystore ${{ secrets.KEYSTORE }} \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} project/app/build/outputs/apk/release/app-release-unsigned.apk release  #release是别名
             mv project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release-signed.apk #改名
