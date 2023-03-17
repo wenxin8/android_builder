@@ -25,18 +25,7 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace
           
-      - name: 签名 APK
-        run: |
-           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
-            -keystore https://raw.githubusercontent.com/wenxin8/android_builder/main/.github/workflows/my-release-key.jks \
-            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
-            -keypass ${{ secrets.KEY_PASSWORD }} https://raw.githubusercontent.com/wenxin8/android_builder/main/.github/workflows/app-release-unsigned.apk release
-           
-           
-      - name: Optimize the APK
-        run: zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/app-release.apk 
-          
-          
+      
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
