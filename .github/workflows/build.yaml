@@ -14,15 +14,10 @@ jobs:
         with:
           java-version: 1.8
      
-     #在 GitHub Actions 中安装 Android SDK 以及相关的构建工具
+
       - name: Setup Android SDK Tools
         uses: android-actions/setup-android@v2.0.2
-        with:
-          sdk-platform: 'android-31'
-          ndk-version: '23.0.7599858'
-          extra-packages: |
-            build-tools;31.0.0
-            platform-tools
+ 
       - name: Add zipalign to PATH
         run: echo "${ANDROID_HOME}/build-tools/$(ls ${ANDROID_HOME}/build-tools)/" >> $GITHUB_PATH
             
