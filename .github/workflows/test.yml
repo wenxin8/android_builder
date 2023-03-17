@@ -1,4 +1,4 @@
-name: test_release android_build
+name: test
 
 on:
   workflow_dispatch:
@@ -9,6 +9,9 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          token: ${{ secrets.PAT }}
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
