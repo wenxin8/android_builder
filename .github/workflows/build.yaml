@@ -23,6 +23,8 @@ jobs:
           extra-packages: |
             build-tools;31.0.0
             platform-tools
+      - name: Add zipalign to PATH
+        run: echo "${ANDROID_HOME}/build-tools/$(ls ${ANDROID_HOME}/build-tools)/" >> $GITHUB_PATH
             
       - id: get-project
         name: Get project name
