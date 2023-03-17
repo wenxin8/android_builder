@@ -27,17 +27,17 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace
       - name: Download keystore
-         env:
+        env:
            TOKEN: ${{ secrets.PAT }}
-         run: |
+        run: |
            curl -sL -H "Authorization: token $TOKEN" -o keystore.jks https://raw.githubusercontent.com/wenxin8/private/main/secret/my-release-key.jks  
       - name: 签名 APK
         run: |
-           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
+          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
             -keystore keystore.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} project/app/build/outputs/apk/release/app-release-unsigned.apk release  #release是别名
-            mv project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release-signed.apk #改名
+          mv project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release-signed.apk #改名
             
       #- name: Optimize APK
       # run: zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release.apk
