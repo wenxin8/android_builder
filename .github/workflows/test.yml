@@ -31,7 +31,7 @@ jobs:
       - name: 签名 APK
         run: |
            jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
-            -keystore https://raw.githubusercontent.com/wenxin8/android_builder/main/.github/workflows/my-release-key.jks \
+            -keystore ${{ secrets.KEYSTORE }} \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} project/app/build/outputs/apk/release/app-release-unsigned.apk release  #release是别名
             mv project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release-signed.apk #改名
