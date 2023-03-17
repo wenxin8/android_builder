@@ -31,10 +31,7 @@ jobs:
             -keystore https://raw.githubusercontent.com/wenxin8/android_builder/main/.github/workflows/my-release-key.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} project/app/build/outputs/apk/release/app-release-unsigned.apk release
-           
-           
-      - name: Optimize the APK
-        run: zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/app-release.apk 
+           zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release.apk 
           
           
       - name: Upload APK
