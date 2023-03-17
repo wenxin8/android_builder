@@ -1,4 +1,4 @@
-name: test
+name: android_build
 
 on:
   workflow_dispatch:
@@ -25,7 +25,16 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace
           
-      
+      - name: 签名 APK
+        run: |
+           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
+            -keystore https://raw.githubusercontent.com/wenxin8/android_builder/main/.github/workflows/my-release-key.jks \
+            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
+            -keypass ${{ secrets.KEY_PASSWORD }} project/app/build/outputs/apk/release/app-release-unsigned.apk release
+            
+      #- name: Optimize APK
+      # run: zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release.apk
+          
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
