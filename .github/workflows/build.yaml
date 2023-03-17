@@ -30,11 +30,11 @@ jobs:
            jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
             -keystore https://raw.githubusercontent.com/wenxin8/android_builder/main/.github/workflows/my-release-key.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
-            -keypass ${{ secrets.KEY_PASSWORD }} app/build/outputs/apk/release/app-release-unsigned.apk release
+            -keypass ${{ secrets.KEY_PASSWORD }} project/app/build/outputs/apk/release/app-release-unsigned.apk release
            
            
       - name: Optimize the APK
-        run: zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/app-release.apk 
+        run: zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/app-release.apk 
           
           
       - name: Upload APK
