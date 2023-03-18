@@ -1,7 +1,7 @@
 name: jjjj
 
 on:
-  push:
+  
   workflow_dispatch:
 
 jobs:
