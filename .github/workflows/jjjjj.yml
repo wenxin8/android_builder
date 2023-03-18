@@ -1,11 +1,13 @@
 name: jjjj
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+        if: ${{ github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
