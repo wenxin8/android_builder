@@ -29,17 +29,20 @@ jobs:
           
            #TIMESTAMP=$(date +'%Y%m%d%H%M%S')
            #echo "export VERSION_NAME=${TIMESTAMP}" >> $GITHUB_ENV
-           chmod +w project/app/build.gradle
-           sed -i "s/versionName \".*\"/versionName \"1.0.8\"/" project/app/build.gradle
+           #chmod +w project/app/build.gradle
+           #sed -i "s/versionName \".*\"/versionName \"1.0.8\"/" project/app/build.gradle
+           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'"1.0.8"\'#" project/app/build.gradle
         #env:       
          #  VERSION_NAME: ${{ env.TIMESTAMP }} 
        
       - name: Build the app
         working-directory: ./project
+        env:
+          VERSION_NAME: "1.0.9"
         run: |
           if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
-          ./gradlew assembleRelease --stacktrace
+          ./gradlew assembleRelease --stacktrace -PversionName="$VERSION_NAME"
       
       
       
