@@ -53,16 +53,16 @@ jobs:
            TIMESTAMP=$(date +'%Y%m%d%H%M%S')
            # 将生成的时间戳赋值给 VERSION_NAME 环境变量
            echo "export VERSION_NAME=${TIMESTAMP}" >> $GITHUB_ENV
-            # 使用 xmlstarlet 命令替换 APK 中的 AndroidManifest.xml 文件中的 versionName 属性
+           #使用 xmlstarlet 命令替换 APK 中的 AndroidManifest.xml 文件中的 versionName 属性
            xmlstarlet ed -L -N android="http://schemas.android.com/apk/res/android" \
              -u "/manifest/@android:versionName" \
              -v "${{ env.VERSION_NAME }}" \
              project/app/build/outputs/apk/release/app-release.apk
         env:
-           # 将 VERSION_NAME 环境变量设置为生成的时间戳
+             # 将 VERSION_NAME 环境变量设置为生成的时间戳
              VERSION_NAME: ${{ env.TIMESTAMP }}
        
-      #- name: Optimize APK
+     #- name: Optimize APK
       # run: zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release.apk
           
       - name: Upload APK
