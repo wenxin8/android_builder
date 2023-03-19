@@ -22,14 +22,17 @@ jobs:
           if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace      
+         # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)
       - name: Upload files
         uses: tayjaybabee/webdav-action@v0.1
         with:
           username: ${{ secrets.WEBDAV_USERNAME }}
           password: ${{ secrets.WEBDAV_PASSWORD }}
+
           server_url: 'https://dav.example.com/'
+          
           remote_path: '/github/'
-          local_path: 
+          local_path: project/app/build/outputs/apk/debug/
     # - name: Upload APK
     #   uses: actions/upload-artifact@v2
     #   with:
