@@ -26,6 +26,8 @@ jobs:
           if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace
+      
+      #使用 curl 命令从 GitHub 存储库的 Secrets 中下载 JKS 文件，并将其命名为 keystore.jks
       - name: Download keystore
         env:
            TOKEN: ${{ secrets.PAT }}
