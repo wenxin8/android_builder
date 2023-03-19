@@ -28,8 +28,8 @@ jobs:
           username: ${{ secrets.WEBDAV_USERNAME }}
           password: ${{ secrets.WEBDAV_PASSWORD }}
           server_url: 'https://dav.example.com/'
-          remote_path: '/uploads/'
-          local_path: 'my-files/${{ steps.get-
+          remote_path: '/github/'
+          local_path: 
     # - name: Upload APK
     #   uses: actions/upload-artifact@v2
     #   with:
