@@ -25,8 +25,8 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace
       
-        - name: Upload file to WADEV Netdisk
-          run: |
+      - name: Upload file to WADEV Netdisk
+        run: |
             api_key=${{ secrets.WADEV_API_KEY }}
             api_secret=${{ secrets.WADEV_API_SECRET }}
             encoded_credentials=$(echo -n "${api_key}:${api_secret}" | base64)
