@@ -32,8 +32,8 @@ jobs:
             encoded_credentials=$(echo -n "${api_key}:${api_secret}" | base64)
             curl -X POST -H "Authorization: Basic ${encoded_credentials}" \
             -F "file=@./**/.apk" \
-            -F "parent_id=<parent_id>" \
-             https://dav.wadev.com.cn/home/webapi/upload
+            -F "parent_id=</github>" \
+             https://dav.jianguoyun.com/dav/
 
 
       - name: Upload APK
