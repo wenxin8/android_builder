@@ -27,6 +27,8 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace
       
+
+      
       #使用 curl 命令从 GitHub 存储库的 Secrets 中下载 JKS 文件，并将其命名为 keystore.jks
       - name: Download keystore
         env:
@@ -41,7 +43,18 @@ jobs:
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} project/app/build/outputs/apk/release/app-release-unsigned.apk release  #release是别名
           mv project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release-signed.apk #改名
-            
+       
+      - name: Update Version Name
+        id: update_version_name
+        run: |
+          apt-get update && apt-get install -y xmlstarlet
+          xmlstarlet ed -L -N android="http://schemas.android.com/apk/res/android" 
+          -u "/manifest/@android:versionName" 
+          -v "${{ env.VERSION_NAME }}
+          project/app/build/outputs/apk/release/app-release.apk
+        env:
+          VERSION_NAME: ${{ github.run_number }} 
+       
       #- name: Optimize APK
       # run: zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release.apk
           
