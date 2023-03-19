@@ -27,6 +27,22 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace
       
+      
+      
+      #使用 curl 命令从 GitHub 存储库的 Secrets 中下载 JKS 文件，并将其命名为 keystore.jks
+      - name: Download keystore
+        env:
+           TOKEN: ${{ secrets.PAT }}
+        run: |
+           curl -sL -H "Authorization: token $TOKEN" -o keystore.jks ${{ secrets.KEYSTORE }}\
+           #https://raw.githubusercontent.com/wenxin8/private/main/secret/my-release-key.jks  
+      - name: 签名 APK
+        run: |
+          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
+            -keystore keystore.jks \
+            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
+            -keypass ${{ secrets.KEY_PASSWORD }} project/app/build/outputs/apk/release/app-release-unsigned.apk release  #release是别名
+          mv project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release-signed.apk #改名
       - name: 更新版本名称
         id: update_version_name
         run: |
@@ -43,22 +59,7 @@ jobs:
              project/app/build/outputs/apk/release/app-release-unsigned.apk
         env:
              # 将 VERSION_NAME 环境变量设置为生成的时间戳
-             VERSION_NAME: ${{ env.TIMESTAMP }}
-      
-      #使用 curl 命令从 GitHub 存储库的 Secrets 中下载 JKS 文件，并将其命名为 keystore.jks
-      - name: Download keystore
-        env:
-           TOKEN: ${{ secrets.PAT }}
-        run: |
-           curl -sL -H "Authorization: token $TOKEN" -o keystore.jks ${{ secrets.KEYSTORE }}\
-           #https://raw.githubusercontent.com/wenxin8/private/main/secret/my-release-key.jks  
-      - name: 签名 APK
-        run: |
-          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
-            -keystore keystore.jks \
-            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
-            -keypass ${{ secrets.KEY_PASSWORD }} project/app/build/outputs/apk/release/app-release-unsigned.apk release  #release是别名
-          mv project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release-signed.apk #改名
+             VERSION_NAME: "1.0.10086" #${{ env.TIMESTAMP }}    
        
       
        
