@@ -27,13 +27,11 @@ jobs:
           
           
           
-           TIMESTAMP=$(date +'%Y%m%d%H%M%S')
-          
-           echo "export VERSION_NAME=${TIMESTAMP}" >> $GITHUB_ENV
-        
-           sed -i "s/versionName \".*\"/versionName \"$TIMESTAMP\"/" project/app/build.gradle
-        #env:
-        
+           #TIMESTAMP=$(date +'%Y%m%d%H%M%S')
+           #echo "export VERSION_NAME=${TIMESTAMP}" >> $GITHUB_ENV
+           chmod +w project/app/build.gradle
+           sed -i "s/versionName \".*\"/versionName \"1.0.8\"/" project/app/build.gradle
+        #env:       
          #  VERSION_NAME: ${{ env.TIMESTAMP }} 
        
       - name: Build the app
