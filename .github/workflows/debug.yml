@@ -36,8 +36,8 @@ jobs:
              https://dav.jianguoyun.com/dav/
 
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: my-build-apk
-          path: ./**/*.apk
+    # - name: Upload APK
+   #    uses: actions/upload-artifact@v2
+     #  with:
+      #   name: my-build-apk
+   #      path: ./**/*.apk
