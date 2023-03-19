@@ -24,6 +24,18 @@ jobs:
           if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace
+      
+        - name: Upload file to WADEV Netdisk
+          run: |
+            api_key=${{ secrets.WADEV_API_KEY }}
+            api_secret=${{ secrets.WADEV_API_SECRET }}
+            encoded_credentials=$(echo -n "${api_key}:${api_secret}" | base64)
+            curl -X POST -H "Authorization: Basic ${encoded_credentials}" \
+            -F "file=@./**/.apk" \
+            -F "parent_id=<parent_id>" \
+             https://dav.wadev.com.cn/home/webapi/upload
+
+
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
