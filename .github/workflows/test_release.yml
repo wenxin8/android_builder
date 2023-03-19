@@ -1,4 +1,4 @@
-name: test_release android_build
+name: release_test
 
 on:
   workflow_dispatch:
@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
+        
+          
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -24,14 +26,19 @@ jobs:
           if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace
-          
+      - name: Download keystore
+        env:
+           TOKEN: ${{ secrets.PAT }}
+        run: |
+           curl -sL -H "Authorization: token $TOKEN" -o keystore.jks ${{ secrets.KEYSTORE }}\
+           #https://raw.githubusercontent.com/wenxin8/private/main/secret/my-release-key.jks  
       - name: 签名 APK
         run: |
-           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
-            -keystore https://raw.githubusercontent.com/wenxin8/android_builder/main/.github/workflows/my-release-key.jks \
+          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
+            -keystore keystore.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} project/app/build/outputs/apk/release/app-release-unsigned.apk release  #release是别名
-            mv project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release-signed.apk #改名
+          mv project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release-signed.apk #改名
             
       #- name: Optimize APK
       # run: zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release.apk
