@@ -20,6 +20,22 @@ jobs:
         run: echo "::set-output name=PROJECT::$(cat project-to-build)"
       - name: Clone project
         run: git clone --depth=1 ${{ steps.get-project.outputs.PROJECT }} project
+        
+      - name: 更新版本名称
+        id: update_version_name
+        run: |
+          
+          
+          
+           TIMESTAMP=$(date +'%Y%m%d%H%M%S')
+          
+           echo "export VERSION_NAME=${TIMESTAMP}" >> $GITHUB_ENV
+        
+           sed -i "s/versionName \".*\"/versionName \"${VERSION_NAME}\"/" project/app/build.gradle
+        env:
+        
+           VERSION_NAME: ${{ env.TIMESTAMP }} 
+       
       - name: Build the app
         working-directory: ./project
         run: |
@@ -44,21 +60,7 @@ jobs:
             -keypass ${{ secrets.KEY_PASSWORD }} project/app/build/outputs/apk/release/app-release-unsigned.apk release  #release是别名
           mv project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release-signed.apk #改名
     
-      - name: 更新版本名称
-        id: update_version_name
-        run: |
-          
-          
-          
-           TIMESTAMP=$(date +'%Y%m%d%H%M%S')
-          
-           echo "export VERSION_NAME=${TIMESTAMP}" >> $GITHUB_ENV
-        
-           sed -i "s/versionName \".*\"/versionName \"${VERSION_NAME}\"/" project/app/build.gradle
-        env:
-        
-           VERSION_NAME: ${{ env.TIMESTAMP }} 
-       
+      
       
        
      #- name: Optimize APK
