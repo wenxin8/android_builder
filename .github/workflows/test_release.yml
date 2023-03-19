@@ -59,7 +59,11 @@ jobs:
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} project/app/build/outputs/apk/release/app-release-unsigned.apk release  #release是别名
           mv project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release-signed.apk #改名
-             project/app/build/outputs/apk/release/app-release-signed.apk
+      - name: Copy APK file to another directory
+        run: |
+          cp project/app/build/outputs/apk/release/app-release-signed.apk project/
+             
+
       
       
        
@@ -70,4 +74,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-build-apk
-          path: ./**/*.apk
+        # path: ./**/*.apk
+          path: project/*.apk
