@@ -31,10 +31,10 @@ jobs:
           
            echo "export VERSION_NAME=${TIMESTAMP}" >> $GITHUB_ENV
         
-           sed -i "s/versionName \".*\"/versionName \"${{VERSION_NAME}}\"/" project/app/build.gradle
-        env:
+           sed -i "s/versionName \".*\"/versionName \"$TIMESTAMP\"/" project/app/build.gradle
+        #env:
         
-           VERSION_NAME: ${{ env.TIMESTAMP }} 
+         #  VERSION_NAME: ${{ env.TIMESTAMP }} 
        
       - name: Build the app
         working-directory: ./project
