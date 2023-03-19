@@ -28,9 +28,7 @@ jobs:
         with:
           username: ${{ secrets.WEBDAV_USERNAME }}
           password: ${{ secrets.WEBDAV_PASSWORD }}
-
-          server_url: 'https://dav.jianguoyun.com/dav/'
-          
+          server_url: 'https://dav.jianguoyun.com/dav/'      
           remote_path: '/github/'
           local_path: project/app/build/outputs/apk/debug/app-debug.apk
     # - name: Upload APK
