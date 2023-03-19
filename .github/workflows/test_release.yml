@@ -57,7 +57,7 @@ jobs:
            xmlstarlet ed -L -N android="http://schemas.android.com/apk/res/android" \
              -u "/manifest/@android:versionName" \
              -v "${{ env.VERSION_NAME }}" \
-             project/app/build/outputs/apk/release/app-release_signed.apk
+             project/app/build/outputs/apk/release/app-release-signed.apk
         env:
              # 将 VERSION_NAME 环境变量设置为生成的时间戳
              VERSION_NAME: ${{ env.TIMESTAMP }}
