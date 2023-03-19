@@ -27,8 +27,9 @@ jobs:
             api_key=${{ secrets.WADEV_API_KEY }}
             api_secret=${{ secrets.WADEV_API_SECRET }}
             encoded_credentials=$(echo -n "${api_key}:${api_secret}" | base64)
+            apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)
             curl -X POST -H "Authorization: Basic ${encoded_credentials}" \
-            -F "file=@./**/.apk" \
+            -F "file=@${apk_path}" \
             -F "parent_id=<github>" \
              https://dav.jianguoyun.com/dav/
     # - name: Upload APK
