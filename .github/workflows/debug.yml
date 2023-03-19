@@ -1,8 +1,6 @@
 name: Debug_android_build
-
 on:
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,8 +21,7 @@ jobs:
         run: |
           if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
-      
+          ./gradlew assembleDebug --stacktrace      
       - name: Upload file to WADEV Netdisk
         run: |
             api_key=${{ secrets.WADEV_API_KEY }}
@@ -34,10 +31,8 @@ jobs:
             -F "file=@./**/.apk" \
             -F "parent_id=<github>" \
              https://dav.jianguoyun.com/dav/
-
-
     # - name: Upload APK
-   #    uses: actions/upload-artifact@v2
-     #  with:
-      #   name: my-build-apk
-   #      path: ./**/*.apk
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: my-build-apk
+    #     path: ./**/*.apk
