@@ -27,10 +27,10 @@ jobs:
           
           
           
-           #TIMESTAMP=$(date +'%Y%m%d%H%M%S')
+           TIMESTAMP=$(date +'%Y%m%d%H%M%S')
            #echo "export VERSION_NAME=${TIMESTAMP}" >> $GITHUB_ENV
            echo '修改VersionName'
-           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'"1.0.8"\'#" project/app/build.gradle
+           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'${TIMESTAMP}\'#" project/app/build.gradle
         #env:       
          #  VERSION_NAME: ${{ env.TIMESTAMP }} 
        
