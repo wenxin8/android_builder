@@ -30,7 +30,7 @@ jobs:
             apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)
             curl -X POST -H "Authorization: Basic ${encoded_credentials}" \
             -F "file=@${apk_path}" \
-            -F "parent_id=<github>" \
+            -F "parent_id=<./github>" \
              https://dav.jianguoyun.com/dav/
     # - name: Upload APK
     #   uses: actions/upload-artifact@v2
