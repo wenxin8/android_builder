@@ -1,4 +1,4 @@
-name: Debug_android_build
+name: Debug_TVbox
 on:
   workflow_dispatch:
 jobs:
