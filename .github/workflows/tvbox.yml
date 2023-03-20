@@ -35,7 +35,7 @@ jobs:
           ./gradlew assembleDebug --stacktrace      
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
       - name: 改名
-          mv project/app/build/outputs/apk/release/app-debug.apk project/app/build/outputs/apk/release/app-debug.apk #改名
+          mv project/app/build/outputs/apk/release/app-debug.apk project/app/build/outputs/apk/release/q215613905_${TIMESTAMP}.apk #改名
       - name: webdav        
         uses: bxb100/action-upload-webdav@v1
         with:
