@@ -38,6 +38,7 @@ jobs:
         run: |
           TIMESTAMP2=$(date +'%Y%m%d%H')
           mv project/app/build/outputs/apk/debug/app-debug.apk project/app/build/outputs/apk/debug/q215613905_${TIMESTAMP2}.apk #改名
+          export TIMESTAMP2
       - name: webdav        
         uses: bxb100/action-upload-webdav@v1
         with:
@@ -47,8 +48,8 @@ jobs:
            webdav_upload_path: "/"
            files: "./project/app/build/outputs/apk/**/*.apk"
 
-    # - name: Upload APK
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: my-build-apk
-    #     path: ./**/*.apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.TIMESTAMP2 }}
+          path: ./**/*.apk
