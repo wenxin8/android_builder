@@ -23,13 +23,14 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace      
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)
+     
       - name: webdav        
         uses: bxb100/action-upload-webdav@v1
         with:
-           webdav_address: https://dav.jianguoyun.com/dav/
+           webdav_address: https://app.koofr.net/dav/Koofr/github
            webdav_username: ${{secrets.WEBDAV_USERNAME}}
            webdav_password: ${{secrets.WEBDAV_PASSWORD}}
-           webdav_upload_path: "/github"
+           webdav_upload_path: "/"
            files: "./project/app/build/outputs/apk/**/*.apk"
 
     # - name: Upload APK
