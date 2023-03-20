@@ -10,8 +10,7 @@ jobs:
       #  with:
       #   repository: owner/repo-name # 此处填写您要构建的 Github 仓库信息
       #   ref: main # 此处填写您要构建的 Github 仓库分支或 tag
-      #   path: project # 在此处指定目标文件夹 
-    
+      #   path: project # 在此处指定目标文件夹     
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -20,8 +19,7 @@ jobs:
       # name: Get project name
       # run: echo "::set-output name=PROJECT::$(cat project-to-build)"
       - name: Clone project
-        run: git clone --depth=1 "https://github.com/q215613905/TVBoxOS" project
-        
+        run: git clone --depth=1 "https://github.com/q215613905/TVBoxOS" project      
       - name: 更新版本名称
         id: update_version_name
         run: |          
@@ -34,8 +32,7 @@ jobs:
           if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace      
-         # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)
-     
+         # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
       - name: webdav        
         uses: bxb100/action-upload-webdav@v1
         with:
