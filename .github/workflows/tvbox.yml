@@ -1,4 +1,5 @@
 name: Debug_TVbox
+
 on:
   push:
   workflow_dispatch:
@@ -40,8 +41,8 @@ jobs:
           mv project/app/build/outputs/apk/debug/app-debug.apk project/app/build/outputs/apk/debug/q215613905_${TIMESTAMP2}.apk #改名
           export TIMESTAMP2
       - name: Create Directory
-        run: mkdir -p ${{ github.workspace }}/tvbox
-          cp project/app/build/outputs/apk/debug/*.apk ${{ github.workspace }}/tvbox
+        run: mkdir -p ~/tvbox        
+          cp project/app/build/outputs/apk/debug/*.apk ~/tvbox  #####${{ github.workspace }}##3
       - name: webdav        
         uses: bxb100/action-upload-webdav@v1
         with:
