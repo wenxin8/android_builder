@@ -54,5 +54,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.TIMESTAMP2 }}
+          name: apk-${{ env.TIMESTAMP2 }}
           path: tvbox/*.apk
