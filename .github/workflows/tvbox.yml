@@ -40,8 +40,9 @@ jobs:
           TIMESTAMP2=$(date +'%Y%m%d%H')
           mv project/app/build/outputs/apk/debug/app-debug.apk project/app/build/outputs/apk/debug/q215613905_${TIMESTAMP2}.apk #改名
           export TIMESTAMP2
-      - name: Create Directory
-        run: mkdir -p ~/tvbox        
+      - name: Create Directory and Copy APKs
+        run: |
+          mkdir -p ~/tvbox        
           cp project/app/build/outputs/apk/debug/*.apk ~/tvbox  #####${{ github.workspace }}##3
       - name: webdav        
         uses: bxb100/action-upload-webdav@v1
