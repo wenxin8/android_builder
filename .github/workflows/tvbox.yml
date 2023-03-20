@@ -41,7 +41,7 @@ jobs:
           export TIMESTAMP2
       - name: Create Directory
         run: mkdir -p ${{ github.workspace }}/tvbox
-          cp project/app/build/outputs/apk/debug/*.apk tvbox/
+          cp project/app/build/outputs/apk/debug/*.apk ${{ github.workspace }}/tvbox
       - name: webdav        
         uses: bxb100/action-upload-webdav@v1
         with:
