@@ -30,7 +30,7 @@ jobs:
            webdav_username: ${{secrets.WEBDAV_USERNAME}}
            webdav_password: ${{secrets.WEBDAV_PASSWORD}}
            webdav_upload_path: "/github"
-           files: "./project/**"
+           files: "./project/app/build/outputs/apk/**/*.apk"
 
     # - name: Upload APK
     #   uses: actions/upload-artifact@v2
