@@ -23,14 +23,14 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace      
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)
-      - name: Upload files
-        uses: tayjaybabee/webdav-action@v0.1
+        uses: bxb100/action-upload-webdav@v1
         with:
-          username: ${{ secrets.WEBDAV_USERNAME }}
-          password: ${{ secrets.WEBDAV_PASSWORD }}
-          server_url: 'https://dav.jianguoyun.com/dav/'      
-          remote_path: '/github/app-debug.apk'
-          local_path: project/app/build/outputs/apk/debug/app-debug.apk
+           webdav_address: ${{secrets.address}}
+           webdav_username: ${{secrets.username}}
+           webdav_password: ${{secrets.password}}
+           webdav_upload_path: "/data"
+    files: "./test/**"
+
     # - name: Upload APK
     #   uses: actions/upload-artifact@v2
     #   with:
