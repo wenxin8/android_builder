@@ -25,11 +25,11 @@ jobs:
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)
         uses: bxb100/action-upload-webdav@v1
         with:
-           webdav_address: ${{secrets.address}}
-           webdav_username: ${{secrets.username}}
-           webdav_password: ${{secrets.password}}
-           webdav_upload_path: "/data"
-    files: "./test/**"
+           webdav_address: https://dav.jianguoyun.com/dav/
+           webdav_username: ${{secrets.WEBDAV_USERNAME}}
+           webdav_password: ${{secrets.WEBDAV_PASSWORD}}
+           webdav_upload_path: "/github"
+           files: "./test/**"
 
     # - name: Upload APK
     #   uses: actions/upload-artifact@v2
