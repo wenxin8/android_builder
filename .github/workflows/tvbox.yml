@@ -42,7 +42,7 @@ jobs:
           export TIMESTAMP2
       - name: Create Directory and Copy APKs
         run: |
-          mkdir -p /tvbox        
+          sudo mkdir -p /tvbox        
           cp project/app/build/outputs/apk/debug/*.apk /tvbox  #####${{ github.workspace }}##3
       - name: webdav        
         uses: bxb100/action-upload-webdav@v1
