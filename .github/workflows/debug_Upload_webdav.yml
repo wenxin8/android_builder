@@ -1,8 +1,6 @@
 name: Debug_android_build
-
 on:
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,9 +21,20 @@ jobs:
         run: |
           if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
+          ./gradlew assembleDebug --stacktrace      
+         # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)
+     
+      - name: webdav        
+        uses: bxb100/action-upload-webdav@v1
         with:
-          name: my-build-apk
-          path: ./**/*.apk
+           webdav_address: https://app.koofr.net/dav/Koofr/github
+           webdav_username: ${{secrets.WEBDAV_USERNAME}}
+           webdav_password: ${{secrets.WEBDAV_PASSWORD}}
+           webdav_upload_path: "/"
+           files: "./project/app/build/outputs/apk/**/*.apk"
+
+    # - name: Upload APK
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: my-build-apk
+    #     path: ./**/*.apk
