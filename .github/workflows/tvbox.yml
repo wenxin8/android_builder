@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env: 
+      TIMESTAMP3=$(date +'%Y%m%d%H')
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
@@ -56,5 +58,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
-          name: apk-${TIMESTAMP2}
+          name: $TIMESTAMP3
           path: project/*.apk
