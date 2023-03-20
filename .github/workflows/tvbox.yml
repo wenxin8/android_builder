@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env: 
-      TIMESTAMP3=$(date +'%Y%m%d%H')
+      TIMESTAMP3: "$(date +'%Y%m%d%H')"
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
