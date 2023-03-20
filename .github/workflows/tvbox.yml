@@ -7,12 +7,12 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
-        with:
-       #   repository: owner/repo-name # 此处填写您要构建的 Github 仓库信息
-       #   ref: main # 此处填写您要构建的 Github 仓库分支或 tag
-       #   path: project # 在此处指定目标文件夹 
+      #  with:
+      #   repository: owner/repo-name # 此处填写您要构建的 Github 仓库信息
+      #   ref: main # 此处填写您要构建的 Github 仓库分支或 tag
+      #   path: project # 在此处指定目标文件夹 
     
-    - name: Set up JDK
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
