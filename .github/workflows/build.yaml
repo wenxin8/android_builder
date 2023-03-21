@@ -1,6 +1,7 @@
 name: android_build
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
@@ -22,7 +23,7 @@ jobs:
         working-directory: ./project
         run: |
           #if [ ! -f "gradlew" ]; then gradle wrapper; fi
-          #chmod +x gradlew
+          chmod +x gradlew
           ./gradlew assembleRelease --stacktrace
       - name: 签名 APK
         run: |
