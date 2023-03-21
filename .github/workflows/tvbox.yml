@@ -50,7 +50,7 @@ jobs:
       - name: webdav        
         uses: bxb100/action-upload-webdav@v1
         with:
-           webdav_address: https://app.koofr.net/dav/Koofr/github
+           webdav_address: https://app.koofr.net/dav/OneDrive/github
            webdav_username: ${{secrets.WEBDAV_USERNAME}}
            webdav_password: ${{secrets.WEBDAV_PASSWORD}}
            webdav_upload_path: "/"
