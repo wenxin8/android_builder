@@ -6,8 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env: 
-      TIMESTAMP3: "$(date +'%Y%m%d%H-%M')"
+   # env: 
+   #    TIMESTAMP3: "$(date +'%Y%m%d%H-%M%S')"
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3.4.0
@@ -28,7 +28,7 @@ jobs:
       - name: 更新版本名称
         id: update_version_name
         run: |          
-           TIMESTAMP=$(date +'%Y%m%d-%M')
+           TIMESTAMP=$(date +'%Y%m%d-%M%S')
            echo '修改VersionName'
            echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
            sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'q215613905_${TIMESTAMP}\'#" project/app/build.gradle
@@ -43,7 +43,7 @@ jobs:
         run: |
           # TIMESTAMP2=$(TZ=Asia/Shanghai date +'%Y%m%d%H') 
           
-          mv project/app/build/outputs/apk/debug/app-debug.apk project/app/build/outputs/apk/debug/q215613905_${TIMESTAMP}_debug.apk  
+          mv project/app/build/outputs/apk/debug/app-debug.apk project/app/build/outputs/apk/debug/TVBbox_q215613905_${TIMESTAMP}_debug.apk  
       - name: Create Directory and Copy APKs
         run: |
           #mkdir -p ${{ github.workspace }}/apk/        
