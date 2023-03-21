@@ -21,8 +21,8 @@ jobs:
       - name: Build the app
         working-directory: ./project
         run: |
-          if [ ! -f "gradlew" ]; then gradle wrapper; fi
-          chmod +x gradlew
+          #if [ ! -f "gradlew" ]; then gradle wrapper; fi
+          #chmod +x gradlew
           ./gradlew assembleRelease --stacktrace
       - name: 签名 APK
         run: |
