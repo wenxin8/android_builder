@@ -37,17 +37,16 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace      
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
-      - name: 改名
+      - name: 重命名
         run: |
           TIMESTAMP2=$(TZ=Asia/Shanghai date +'%Y%m%d%H') 
           echo "TIMESTAMP2=$TIMESTAMP2" >> $GITHUB_ENV
-          mv project/app/build/outputs/apk/debug/app-debug.apk project/app/build/outputs/apk/debug/q215613905_${TIMESTAMP2}.apk #改名
-          export TIMESTAMP2
+          mv project/app/build/outputs/apk/debug/app-debug.apk project/app/build/outputs/apk/debug/q215613905_${TIMESTAMP2}_debug.apk  
       - name: Create Directory and Copy APKs
         run: |
           #mkdir -p ${{ github.workspace }}/apk/        
           cp project/app/build/outputs/apk/debug/*.apk project/  #####${{ github.workspace }}##3
-      - name: webdav        
+      - name: upload webdav        
         uses: bxb100/action-upload-webdav@v1
         with:
            webdav_address: https://app.koofr.net/dav/OneDrive/github
