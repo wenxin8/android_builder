@@ -58,5 +58,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
-          name: ${{env.TIMESTAMP3}}
+          name: ${{env.TIMESTAMP2}}
           path: project/*.apk
