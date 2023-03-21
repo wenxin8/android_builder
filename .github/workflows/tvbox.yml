@@ -1,7 +1,7 @@
 name: Debug_TVbox
 
 on:
-  push:
+ #push:
   workflow_dispatch:
 jobs:
   build:
