@@ -42,7 +42,7 @@ jobs:
         env:
            TOKEN: ${{ secrets.PAT }}
         run: |
-           curl -sL -H "Authorization: token $TOKEN" -o keystore. ${{ secrets.KEYSTORE }}\
+           curl -sL -H "Authorization: token $TOKEN" -o keystore.jks ${{ secrets.KEYSTORE }}\
       - name: 签名 APK
         run: |
           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
