@@ -49,7 +49,7 @@ jobs:
             -keystore keystore.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} \
-            -mkdir releaseapk
+            -mkdir releaseapk \
             -signedjar releaseapk/signed.apk \
             project/app/build/outputs/apk/release/app-release-unsigned.apk wx    
      
