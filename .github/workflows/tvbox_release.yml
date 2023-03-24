@@ -77,4 +77,4 @@ jobs:
         uses: actions/upload-artifact@v3.1.2
         with:
           name: TVBox_q215613905_${{env.TIMESTAMP}}
-          path: project/*.apk
+          path: releaseapk/*.apk
