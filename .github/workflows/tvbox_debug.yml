@@ -28,7 +28,11 @@ jobs:
       - name: 更新版本名称
         id: update_version_name
         run: |          
+
            TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')
+
+           
+
            echo '修改VersionName'
            echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
            sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'q215613905_${TIMESTAMP}\'#" project/app/build.gradle
