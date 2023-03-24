@@ -1,4 +1,4 @@
-name: Debug_TVbox
+name: release_TVbox
 
 on:
   #push:
@@ -43,17 +43,14 @@ jobs:
            TOKEN: ${{ secrets.PAT }}
         run: |
            curl -sL -H "Authorization: token $TOKEN" -o keystore. ${{ secrets.KEYSTORE }}\
-      - name: 签名
-        uses: kevin-david/zipalign-sign-android-release@v1.1
-        id: sign_app
-        
-        with:
-          releaseDirectory: project/app/build/outputs/apk/release
-          signingKeyBase64: keystore.jks
-          alias: wx
-          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-          zipAlign: true
+      - name: 签名 APK
+        run: |
+          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
+            -keystore keystore.jks \
+            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
+            -keypass ${{ secrets.KEY_PASSWORD }} \
+            -jarsigner project/signed.apk project/app/build/outputs/apk/release/app-release-unsigned.apk wx    
+     
          
      
      
