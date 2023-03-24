@@ -43,11 +43,10 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace      
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
-      - name: 重命名
-        run: |
-          # TIMESTAMP2=$(TZ=Asia/Shanghai date +'%Y%m%d%H') 
-          
+      - name: 重命名apk
+        run: |      
           mv project/app/build/outputs/apk/debug/app-debug.apk project/app/build/outputs/apk/debug/TVBbox_q215613905_${TIMESTAMP}_debug.apk  
+          
       - name: Create Directory and Copy APKs
         run: |
           #mkdir -p ${{ github.workspace }}/apk/        
