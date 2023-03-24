@@ -41,7 +41,7 @@ jobs:
         uses: kevin-david/zipalign-sign-android-release@v1.1
         id: sign_app
         with:
-          releaseDirectory: app/build/outputs/apk/release
+          releaseDirectory: project/app/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.KEYSTORE }}
           alias: wx
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
