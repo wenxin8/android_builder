@@ -38,7 +38,7 @@ jobs:
             -keystore keystore.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} project/app/build/outputs/apk/release/app-release-unsigned.apk release  #release是别名
-          mv project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release-signed.apk #改名
+         # mv project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release-signed.apk #改名
             
       #- name: Optimize APK
       # run: zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk project/app/build/outputs/apk/release/app-release.apk
