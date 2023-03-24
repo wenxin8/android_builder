@@ -1,0 +1,74 @@
+name: Debug_TVbox
+
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3.4.0
+      #  with:
+      #   repository: owner/repo-name # 此处填写您要构建的 Github 仓库信息
+      #   ref: main # 此处填写您要构建的 Github 仓库分支或 tag
+      #   path: project # 在此处指定目标文件夹     
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.10.0
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+      #- id: get-project
+      # name: Get project name
+      # run: echo "::set-output name=PROJECT::$(cat project-to-build)"
+      - name: Clone project
+        run: git clone --depth=1 "https://github.com/q215613905/TVBoxOS" project      
+      - name: 更新版本名称
+        id: update_version_name
+        run: |          
+           TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')        
+           echo '修改VersionName'
+           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
+           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'q215613905_${TIMESTAMP}\'#" project/app/build.gradle
+      - name: Build the app
+        working-directory: ./project
+        run: |
+          if [ ! -f "gradlew" ]; then gradle wrapper; fi
+          chmod +x gradlew
+          ./gradlew assembleRelease --stacktrace      
+         # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
+      - name sign-apk
+        - uses: kevin-david/zipalign-sign-android-release@v1.1
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.KEYSTORE }}
+          alias: wx
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+          zipAlign: true
+         
+     
+     
+      - name: 重命名apk
+        run: |      
+          mv project/app/build/outputs/apk/release/app-release.apk project/app/build/outputs/apk/release/TVBbox_q215613905_${TIMESTAMP}_release.apk  
+          
+      - name: Create Directory and Copy APKs
+        run: |
+          #mkdir -p ${{ github.workspace }}/apk/        
+          cp project/app/build/outputs/apk/release/*.apk project/  #####${{ github.workspace }}##3
+      - name: upload webdav        
+        uses: bxb100/action-upload-webdav@v1
+        with:
+           webdav_address: https://app.koofr.net/dav/OneDrive/github
+           webdav_username: ${{secrets.WEBDAV_USERNAME}}
+           webdav_password: ${{secrets.WEBDAV_PASSWORD}}
+           webdav_upload_path: "/"
+           files: "./project/app/build/outputs/apk/**/*.apk"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: TVBox_q215613905_${{env.TIMESTAMP}}
+          path: project/*.apk
