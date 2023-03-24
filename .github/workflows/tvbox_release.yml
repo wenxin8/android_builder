@@ -38,15 +38,18 @@ jobs:
           ./gradlew assembleRelease --stacktrace      
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
          
- 
+      - name: Download keystore
+        env:
+           TOKEN: ${{ secrets.PAT }}
+        run: |
+           curl -sL -H "Authorization: token $TOKEN" -o keystore. ${{ secrets.KEYSTORE }}\
       - name: 签名
         uses: kevin-david/zipalign-sign-android-release@v1.1
         id: sign_app
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+        
         with:
           releaseDirectory: project/app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.KEYSTORE }}
+          signingKeyBase64: keystore.jks
           alias: wx
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
