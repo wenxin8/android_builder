@@ -37,6 +37,12 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace      
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
+         
+      - name: Checkout private repo
+        uses: actions/checkout@v2
+        with:
+          repository:  <private_repository>
+          token: ${{ secrets.PTA }} 
       - name: 签名
         uses: kevin-david/zipalign-sign-android-release@v1.1
         id: sign_app
