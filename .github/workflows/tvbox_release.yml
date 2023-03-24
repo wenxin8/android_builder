@@ -49,14 +49,14 @@ jobs:
             -keystore keystore.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} \
-            -jarsigner project/signed.apk project/app/build/outputs/apk/release/app-release-unsigned.apk wx    
+            -signedjar project/signed.apk project/app/build/outputs/apk/release/app-release-unsigned.apk wx    
      
          
      
      
-      - name: 重命名apk
-        run: |      
-          mv project/app/build/outputs/apk/release/app-release.apk project/app/build/outputs/apk/release/TVBbox_q215613905_${TIMESTAMP}_release.apk  
+     # - name: 重命名apk
+     #   run: |      
+     #     mv project/app/build/outputs/apk/release/app-release.apk project/app/build/outputs/apk/release/TVBbox_q215613905_${TIMESTAMP}_release.apk  
           
       - name: Create Directory and Copy APKs
         run: |
