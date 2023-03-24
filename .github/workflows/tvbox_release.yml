@@ -45,11 +45,12 @@ jobs:
            curl -sL -H "Authorization: token $TOKEN" -o keystore.jks ${{ secrets.KEYSTORE }}\
       - name: 签名 APK
         run: |
+          mkdir releaseapk
           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
             -keystore keystore.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} \
-            -mkdir releaseapk \
+             
             -signedjar releaseapk/signed.apk \
             project/app/build/outputs/apk/release/app-release-unsigned.apk wx    
      
