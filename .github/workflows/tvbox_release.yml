@@ -47,7 +47,11 @@ jobs:
       
       - name: Setup Android SDK Tools
         uses: android-actions/setup-android@v2.0.2
-
+      - name: Install Android Build-Tools and update environment variables
+        run: |
+          export ANDROID_HOME=/usr/local/android-sdk/
+          export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/{version}/
+          echo y | sdkmanager --install "build-tools;30.0.3"
       
       
       - name: Zipalign APK file # 优化 APK 文件
