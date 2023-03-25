@@ -24,8 +24,8 @@ jobs:
       - name: 获取时间
         run: | 
           cd project
-          lastcommit=$(git log -1 --pretty=format:%ci | sed 's/[-: ]//g')
-          lastcommit=$(echo $lastcommit | cut -c 1-12)
+          lastcommit=$(git log -1 --pretty=format:%ci)  #获取最新提交的时间戳
+          lastcommit=$(date -d $lastcommit +"%Y%m%d-%H%M")  #将该时间戳格式化为 yyyymmdd-hhmm 的形式
           echo "lastcommit=$lastcommit" >> $GITHUB_ENV
           TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
