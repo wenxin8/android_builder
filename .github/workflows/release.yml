@@ -24,7 +24,7 @@ jobs:
           git clone --depth=1 ${{ steps.get-project.outputs.PROJECT }} project
           cd project
           time=$(git log -1 --pretty=format:%ci | sed 's/[-: ]//g')
-          time=$(echo $time | cut -c 1-12)
+          time=$(echo $time | cut -c 1-8,12-15)
           echo "time=$time" >> $GITHUB_ENV
       - name: Build the app
         working-directory: ./project
