@@ -65,7 +65,7 @@ jobs:
      
       #优化成功
       - name: Zipalign APK file
-        if: ${{ env.runZipalign }} == "true"
+        if: ${{ env.runZipalign }}
         run: $ANDROID_HOME/build-tools/30.0.3/zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk app-release.apk
       #- name: Zipalign APK file # 优化 APK 文件
       # run: zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk release/app-release.apk
@@ -95,7 +95,7 @@ jobs:
           #mkdir -p ${{ github.workspace }}/releaseapk/        
          # cp project/app/build/outputs/apk/release/*.apk project/  #####${{ github.workspace }}##3
       - name: upload webdav   
-        if: ${{env.uploadwebdav}} == "true"
+        if: ${{env.uploadwebdav}}
         uses: bxb100/action-upload-webdav@v1
         with:
            webdav_address: https://app.koofr.net/dav/OneDrive/github
