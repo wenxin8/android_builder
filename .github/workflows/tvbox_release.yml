@@ -14,7 +14,7 @@ jobs:
       uploadwebdav: false
       uploadartifact: ""
     steps:
-      - name:环境变量
+      - name: 环境变量
         run: |
           echo "a=false" >> $GITHUB_ENV
       - name: Checkout the code
@@ -47,6 +47,7 @@ jobs:
            sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'q215613905_${{env.lastcommit}}\'#" project/app/build.gradle
       
       - name: Setup Android SDK Tools
+        if: ""
         uses: android-actions/setup-android@v2.0.2
       - name: Install Android Build-Tools and update environment variables
         run: |
