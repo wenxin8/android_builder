@@ -45,7 +45,7 @@ jobs:
            curl -sL -H "Authorization: token $TOKEN" -o keystore.jks ${{ secrets.KEYSTORE }}\
       - name: 签名 APK
         run: |
-          mkdir -p releaseapk/
+          mkdir -p ${{ github.workspace }}/apk/
           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
             -keystore keystore.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
@@ -62,7 +62,7 @@ jobs:
           
       - name: Create Directory and Copy APKs
         run: |
-          #mkdir -p ${{ github.workspace }}/apk/        
+          #mkdir -p ${{ github.workspace }}/releaseapk/        
           cp project/app/build/outputs/apk/release/*.apk project/  #####${{ github.workspace }}##3
       - name: upload webdav        
         uses: bxb100/action-upload-webdav@v1
