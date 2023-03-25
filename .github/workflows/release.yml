@@ -21,10 +21,10 @@ jobs:
         run: echo "::set-output name=PROJECT::$(cat TVBoxOS_q215613905)"
       - name: Clone project
         run: git clone --depth=1 ${{ steps.get-project.outputs.PROJECT }} project
-        cd project
-        time=$(git log -1 --pretty=format:%ci | sed 's/[-: ]//g')
-        time=$(echo $time | cut -c 1-12)
-        echo "time=$time" >> $GITHUB_ENV
+          cd project
+          time=$(git log -1 --pretty=format:%ci | sed 's/[-: ]//g')
+          time=$(echo $time | cut -c 1-12)
+          echo "time=$time" >> $GITHUB_ENV
       - name: Build the app
         working-directory: ./project
         run: |
