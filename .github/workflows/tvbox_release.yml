@@ -1,7 +1,7 @@
 name: release_TVbox
 
 on:
-  push:
+  #push:
   workflow_dispatch:
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
         run: | 
           cd project
           lastcommit=$(git log -1 --pretty=format:%ci | sed 's/[-: ]//g')
-          lastcommit=$(echo $lastcommit | cut -c 1-8,12-15)
+          lastcommit=$(echo $lastcommit | cut -c 1-12)
           echo "lastcommit=$lastcommit" >> $GITHUB_ENV
           TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
