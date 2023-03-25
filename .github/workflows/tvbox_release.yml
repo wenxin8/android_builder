@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths: 
-      - 'tvbox_release.yml'
+      - ".github/workflows/tvbox_release.yml"
   workflow_dispatch:
 jobs:
   build:
