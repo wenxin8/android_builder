@@ -16,7 +16,7 @@ jobs:
     steps:
       - name:环境变量
         run: |
-          echo "a = false" >> $GITHUB_ENV
+          echo "a=false" >> $GITHUB_ENV
       - name: Checkout the code
         uses: actions/checkout@v3.4.0
       #  with:
