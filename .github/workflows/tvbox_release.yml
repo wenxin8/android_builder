@@ -2,7 +2,7 @@ name: release_TVbox
 on:
   push:
     paths: 
-      tvbox_release.yml
+      - 'tvbox_release.yml'
   workflow_dispatch:
 jobs:
   build:
