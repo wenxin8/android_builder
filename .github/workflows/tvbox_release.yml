@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      runZipalign: false
+      uploadwebdav: false
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3.4.0
@@ -46,6 +49,7 @@ jobs:
           export ANDROID_HOME=/usr/local/android-sdk/
           export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/30.0.3/
           echo y | sdkmanager --install "build-tools;30.0.3"
+      
       - name: Build the app
         working-directory: ./project
         run: |
@@ -55,8 +59,9 @@ jobs:
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
       
      
-      
+      #优化成功
       - name: Zipalign APK file
+        if: ${{ env.runZipalign }}
         run: $ANDROID_HOME/build-tools/30.0.3/zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk app-release.apk
       #- name: Zipalign APK file # 优化 APK 文件
       # run: zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk release/app-release.apk
@@ -85,7 +90,8 @@ jobs:
        # run: |
           #mkdir -p ${{ github.workspace }}/releaseapk/        
          # cp project/app/build/outputs/apk/release/*.apk project/  #####${{ github.workspace }}##3
-      - name: upload webdav        
+      - name: upload webdav   
+        if: ${{env.uploadwebdav}}
         uses: bxb100/action-upload-webdav@v1
         with:
            webdav_address: https://app.koofr.net/dav/OneDrive/github
