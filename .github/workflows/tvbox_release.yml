@@ -44,7 +44,8 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace      
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
-         
+      - name: Zipalign APK file # 优化 APK 文件
+        run: zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk release/app-release.apk
       - name: Download keystore
         env:
            TOKEN: ${{ secrets.PAT }}
@@ -58,6 +59,8 @@ jobs:
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} \
             -signedjar releaseapk/TVBox_q215613905_${{env.lastcommit}}.apk project/app/build/outputs/apk/release/app-release-unsigned.apk wx        
+            
+      
      # - name: 重命名apk
      #   run: |      
      #     mv project/app/build/outputs/apk/release/app-release.apk project/app/build/outputs/apk/release/TVBbox_q215613905_${TIMESTAMP}_release.apk  
