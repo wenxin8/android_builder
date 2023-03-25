@@ -1,5 +1,4 @@
 name: release_TVbox
-
 on:
   push:
     paths: tvbox_release.yml
