@@ -18,11 +18,14 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '8'
-      #- id: get-project
-      # name: Get project name
-      # run: echo "::set-output name=PROJECT::$(cat project-to-build)"
+      
       - name: Clone project
-        run: git clone --depth=1 "https://github.com/q215613905/TVBoxOS" project      
+        run: git clone --depth=1 "https://github.com/q215613905/TVBoxOS" project
+      - name: 获取最新提交时间
+        cd project
+          lastcommit=$(git log -1 --pretty=format:%ci | sed 's/[-: ]//g')
+          lastcommit=$(echo $lastcommit | cut -c 1-8,12-15)
+          echo "lastcommit=$lastcommit" >> $GITHUB_ENV
       - name: 更新版本名称
         id: update_version_name
         run: |          
