@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       runZipalign: "1"
-      uploadwebdav: ""
-      uploadartifact: ""
+      uploadwebdav: "1"
+      uploadartifact: "1"
     steps:
       - name: 环境变量
         run: |
-          echo "a=false" >> $GITHUB_ENV
+          echo "a=" >> $GITHUB_ENV
       - name: Checkout the code
         uses: actions/checkout@v3.4.0
       #  with:
@@ -108,5 +108,5 @@ jobs:
         if:  ${{env.uploadartifact}}
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: TVBox_q215613905_${{env.lastcommit}}
+          name: TVBox_q215613905_${{env.lastcommit}}_${{env.TIMESTAMP}}
           path: releaseapk/*.apk
