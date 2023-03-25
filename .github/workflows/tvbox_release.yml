@@ -49,7 +49,7 @@ jobs:
           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
             -keystore keystore.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
-            -keypass ${{ secrets.KEY_PASSWORD }} \         
+            -keypass ${{ secrets.KEY_PASSWORD }} \
             -signedjar releaseapk/signed.apk project/app/build/outputs/apk/release/app-release-unsigned.apk wx    
      
          
