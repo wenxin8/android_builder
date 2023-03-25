@@ -1,6 +1,8 @@
 name: release_TVbox
 on:
   push:
+    branches:
+      - main
     paths: 
       - 'tvbox_release.yml'
   workflow_dispatch:
