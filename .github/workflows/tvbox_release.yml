@@ -45,7 +45,7 @@ jobs:
            curl -sL -H "Authorization: token $TOKEN" -o keystore.jks ${{ secrets.KEYSTORE }}\
       - name: 签名 APK
         run: |
-          mkdir -p ${{ github.workspace }}/apk/
+          mkdir -p ${{ github.workspace }}/releaseapk/
           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
             -keystore keystore.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
