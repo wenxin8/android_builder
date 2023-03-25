@@ -34,9 +34,11 @@ jobs:
           echo "lastcommit=$lastcommit" >> $GITHUB_ENV
           TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
+      
       - name: 更新版本名称
         run: |                                    
            sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'q215613905_${{env.lastcommit}}\'#" project/app/build.gradle
+      
       - name: Build the app
         working-directory: ./project
         run: |
@@ -50,17 +52,19 @@ jobs:
       - name: Install Android Build-Tools and update environment variables
         run: |
           export ANDROID_HOME=/usr/local/android-sdk/
-          export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/{version}/
+          export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/30.0.3/
           echo y | sdkmanager --install "build-tools;30.0.3"
       
       
       - name: Zipalign APK file # 优化 APK 文件
         run: zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk release/app-release.apk
+      
       - name: Download keystore
         env:
            TOKEN: ${{ secrets.PAT }}
         run: |
            curl -sL -H "Authorization: token $TOKEN" -o keystore.jks ${{ secrets.KEYSTORE }}\
+      
       - name: 签名 APK
         run: |
           mkdir -p ${{ github.workspace }}/releaseapk/
