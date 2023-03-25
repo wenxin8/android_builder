@@ -12,6 +12,7 @@ jobs:
     env:
       runZipalign: false
       uploadwebdav: false
+      uploadartifact: false
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3.4.0
@@ -101,6 +102,7 @@ jobs:
            files: "./releaseapk/*.apk"
 
       - name: Upload APK
+        if: ${{env.uploadartifact}}
         uses: actions/upload-artifact@v3.1.2
         with:
           name: TVBox_q215613905_${{env.lastcommit}}
