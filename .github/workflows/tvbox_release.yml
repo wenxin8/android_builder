@@ -21,18 +21,21 @@ jobs:
       
       - name: Clone project
         run: git clone --depth=1 "https://github.com/q215613905/TVBoxOS" project
-      - name: 获取最新提交时间
-        cd project
+      - name: 获取时间
+        run:|
+          cd project
           lastcommit=$(git log -1 --pretty=format:%ci | sed 's/[-: ]//g')
           lastcommit=$(echo $lastcommit | cut -c 1-8,12-15)
           echo "lastcommit=$lastcommit" >> $GITHUB_ENV
+          TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')
+          echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
       - name: 更新版本名称
         id: update_version_name
         run: |          
-           TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')        
+                   
            echo '修改VersionName'
-           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
-           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'q215613905_${TIMESTAMP}\'#" project/app/build.gradle
+           
+           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'q215613905_${{env.TIMESTAMP}}\'#" project/app/build.gradle
       - name: Build the app
         working-directory: ./project
         run: |
@@ -78,5 +81,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: TVBox_q215613905_${{env.TIMESTAMP}}
+          name: TVBox_q215613905_${{env.lastcommit}}
           path: releaseapk/*.apk
