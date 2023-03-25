@@ -58,7 +58,7 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: TVBoxdebug_q215613905_${{env.lastcommit}}
+          name: TVBoxdebug_q215613905_${{env.lastcommit}}_${{env.TIMESTAMP}}
           path: debug/*.apk
       
            
