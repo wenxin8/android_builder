@@ -1,7 +1,7 @@
 name: release_TVbox
 
 on:
-  #push:
+  push:
   workflow_dispatch:
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
       - name: Clone project
         run: git clone --depth=1 "https://github.com/q215613905/TVBoxOS" project
       - name: 获取时间
-        run:|
+        run: | 
           cd project
           lastcommit=$(git log -1 --pretty=format:%ci | sed 's/[-: ]//g')
           lastcommit=$(echo $lastcommit | cut -c 1-8,12-15)
@@ -30,12 +30,8 @@ jobs:
           TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
       - name: 更新版本名称
-        id: update_version_name
-        run: |          
-                   
-           echo '修改VersionName'
-           
-           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'q215613905_${{env.TIMESTAMP}}\'#" project/app/build.gradle
+        run: |                                    
+           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'q215613905_${{env.lastcommit}}\'#" project/app/build.gradle
       - name: Build the app
         working-directory: ./project
         run: |
@@ -56,19 +52,15 @@ jobs:
             -keystore keystore.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} \
-            -signedjar releaseapk/TVBox_q215613905_${{env.TIMESTAMP}}.apk project/app/build/outputs/apk/release/app-release-unsigned.apk wx    
-     
-         
-     
-     
+            -signedjar releaseapk/TVBox_q215613905_${{env.lastcommit}}.apk project/app/build/outputs/apk/release/app-release-unsigned.apk wx        
      # - name: 重命名apk
      #   run: |      
      #     mv project/app/build/outputs/apk/release/app-release.apk project/app/build/outputs/apk/release/TVBbox_q215613905_${TIMESTAMP}_release.apk  
           
-      - name: Create Directory and Copy APKs
-        run: |
+      #- name: Create Directory and Copy APKs
+       # run: |
           #mkdir -p ${{ github.workspace }}/releaseapk/        
-          cp project/app/build/outputs/apk/release/*.apk project/  #####${{ github.workspace }}##3
+         # cp project/app/build/outputs/apk/release/*.apk project/  #####${{ github.workspace }}##3
       - name: upload webdav        
         uses: bxb100/action-upload-webdav@v1
         with:
