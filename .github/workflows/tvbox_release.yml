@@ -44,6 +44,14 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace      
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
+      
+      - name: Install Android Build-Tools and update environment variables
+        run: |
+          export ANDROID_HOME=/usr/local/android-sdk/
+          export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/{version}/
+          echo y | sdkmanager --install "build-tools;30.0.3"
+      
+      
       - name: Zipalign APK file # 优化 APK 文件
         run: zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk release/app-release.apk
       - name: Download keystore
