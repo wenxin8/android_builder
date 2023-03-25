@@ -1,7 +1,8 @@
 name: release_TVbox
 on:
   push:
-    paths: tvbox_release.yml
+    paths: 
+      tvbox_release.yml
   workflow_dispatch:
 jobs:
   build:
@@ -21,6 +22,7 @@ jobs:
       
       - name: Clone project
         run: git clone --depth=1 "https://github.com/q215613905/TVBoxOS" project
+     
       - name: 获取时间
         run: | 
           cd project
