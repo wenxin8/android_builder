@@ -1,56 +1,49 @@
-name: Debug_TVbox
-
+name: tvbox_debug_webdav
 on:
-  #push:
+  push:
+    paths: 
+      - ".github/workflows/tvbox_debug.yml"
   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
-   # env: 
-   #    TIMESTAMP3: "$(date +'%Y%m%d-%H%M')"
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3.4.0
-      #  with:
-      #   repository: owner/repo-name # 此处填写您要构建的 Github 仓库信息
-      #   ref: main # 此处填写您要构建的 Github 仓库分支或 tag
-      #   path: project # 在此处指定目标文件夹     
+  
       - name: Setup Java JDK
         uses: actions/setup-java@v3.10.0
         with:
           distribution: 'temurin'
           java-version: '8'
-      #- id: get-project
-      # name: Get project name
-      # run: echo "::set-output name=PROJECT::$(cat project-to-build)"
+      
       - name: Clone project
-        run: git clone --depth=1 "https://github.com/q215613905/TVBoxOS" project      
+        run: git clone --depth=1 "https://github.com/q215613905/TVBoxOS" project
+     
+      - name: 获取时间
+        run: | 
+          cd project
+          lastcommit="$(TZ=Asia/Shanghai git log -1 --pretty=format:%ci)"  #获取指定时区下的最新提交时间戳
+          lastcommit=$(echo $lastcommit | sed 's/ [+-][0-9]\{4\}//g')  #时间戳字符串中的空格和加号后面的时区信息去掉
+          lastcommit=$(date --date="$lastcommit" +'%Y%m%d-%H%M')  #将该时间戳格式化为 yyyymmdd-hhmm 的形式
+          echo "lastcommit=$lastcommit" >> $GITHUB_ENV
+          TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')
+          echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
       - name: 更新版本名称
-        id: update_version_name
-        run: |          
-
-           TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')
-
-           
-
-           echo '修改VersionName'
-           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
-           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'q215613905_${TIMESTAMP}\'#" project/app/build.gradle
+        run: |                                    
+           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'q215613905_${{env.lastcommit}}\'#" project/app/build.gradle
       - name: Build the app
         working-directory: ./project
         run: |
           if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace      
-         # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
-      - name: 重命名apk
-        run: |      
-          mv project/app/build/outputs/apk/debug/app-debug.apk project/app/build/outputs/apk/debug/TVBbox_q215613905_${TIMESTAMP}_debug.apk  
-          
-      - name: Create Directory and Copy APKs
+    
+      - name: 重命名，复制apk
         run: |
-          #mkdir -p ${{ github.workspace }}/apk/        
-          cp project/app/build/outputs/apk/debug/*.apk project/  #####${{ github.workspace }}##3
+          mkdir -p ${{ github.workspace }}/debug/
+          mv project/app/build/outputs/apk/debug/app-debug.apk debug/TVBoxdebug_q215613905_${{env.lastcommit}}.apk
+          
       - name: upload webdav        
         uses: bxb100/action-upload-webdav@v1
         with:
@@ -58,10 +51,12 @@ jobs:
            webdav_username: ${{secrets.WEBDAV_USERNAME}}
            webdav_password: ${{secrets.WEBDAV_PASSWORD}}
            webdav_upload_path: "/"
-           files: "./project/app/build/outputs/apk/**/*.apk"
+           files: "./debug/*.apk"
 
       - name: Upload APK
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: TVBox_q215613905_${{env.TIMESTAMP}}
-          path: project/*.apk
+          name: TVBox_q215613905_${{env.lastcommit}}
+          path: debug/*.apk
+      
+           
