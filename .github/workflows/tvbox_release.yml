@@ -128,7 +128,7 @@ jobs:
           path: releaseapk/*.apk
     
       - name: Release and Upload Assets
-        if ${{true}}
+        if: ${{true}}
         uses: ncipollo/release-action@v1
         with:
           name: ${{ env.lastcommit }}
