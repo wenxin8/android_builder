@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       runZipalign: "1"
-      uploadwebdav: "1"
+      uploadwebdav: "0"
       uploadartifact: "1"
     steps:
       - name: 环境变量
@@ -103,10 +103,25 @@ jobs:
            webdav_password: ${{secrets.WEBDAV_PASSWORD}}
            webdav_upload_path: "/"
            files: "./releaseapk/*.apk"
+      
+      - name: Check existing tag
+        if: ${{false}}
+        env:
+          TAG_NAME: "v1.0.0"
+          REMOTE_TAGS: $(git ls-remote --tags origin)
+        run: |
+          if echo "${{ env.REMOTE_TAGS }}" | grep -q "refs/tags/${{ env.TAG_NAME }}$"; then
+          echo "z=000" >> $GITHUB_ENV
+          echo "Tag ${{ env.TAG_NAME }} already exists in remote repository."
+          exit 1
+          fi
 
       - name: Upload APK
         if:  ${{env.uploadartifact}}
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: TVBox_q215613905_${{env.lastcommit}}_${{env.TIMESTAMP}}
+          name: TVBox_q215613905_${{env.lastcommit}}_${{env.TIMESTAMP}}_${{env.z}}
           path: releaseapk/*.apk
+    
+    
+      
