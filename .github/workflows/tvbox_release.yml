@@ -103,7 +103,8 @@ jobs:
            webdav_password: ${{secrets.WEBDAV_PASSWORD}}
            webdav_upload_path: "/"
            files: "./releaseapk/*.apk"
-      
+     
+      #检查当前操作所属的 tag 是否已经存在于远程仓库
       - name: Check existing tag
         if: ${{true}}
         env:
