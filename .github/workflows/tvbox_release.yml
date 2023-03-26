@@ -127,5 +127,14 @@ jobs:
           name: TVBox_q215613905_${{env.lastcommit}}_${{env.TIMESTAMP}}_${{env.z}}
           path: releaseapk/*.apk
     
-    
+      - name: Release and Upload Assets
+        if ${{true}}
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ env.lastcommit }}
+          tag: ${{ env.lastcommit }}
+          allowUpdates: true
+          removeArtifacts: true
+          artifacts: |
+            releaseapk/*.apk
       
