@@ -114,7 +114,7 @@ jobs:
           if echo "${{ env.REMOTE_TAGS }}" | grep -q "refs/tags/${{ env.TAG_NAME }}$"; then
             echo "z=111" >> $GITHUB_ENV
             echo "Tag ${{ env.TAG_NAME }} already exists in remote repository."
-          exit 1
+          # exit 1
           else
             echo "z=000" >> $GITHUB_ENV
             echo "Tag does not exist in remote repository."
