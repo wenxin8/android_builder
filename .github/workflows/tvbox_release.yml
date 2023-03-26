@@ -131,8 +131,8 @@ jobs:
         if: ${{true}}
         uses: ncipollo/release-action@v1
         with:
-          name: ${{ env.lastcommit }}
-          tag: ${{ env.lastcommit }}
+          name: ${{env.lastcommit}}
+          tag: ${{env.lastcommit}}
           allowUpdates: true
           removeArtifacts: true
           artifacts: |
