@@ -133,6 +133,7 @@ jobs:
         with:
           name: ${{env.lastcommit}}
           tag: ${{env.lastcommit}}
+          token: ${{ secrets.PAT }}
           allowUpdates: true
           removeArtifacts: true
           artifacts: |
