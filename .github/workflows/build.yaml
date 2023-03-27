@@ -1,11 +1,14 @@
 name: android_build
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      product: "mobile"
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3.4.0
@@ -27,7 +30,8 @@ jobs:
         run: |
           #if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
-          ./gradlew assembleleanbackrelease --build-cache --parallel --daemon --warning-mode all --stacktrace
+          ./gradlew assemble${{ env.product }}release --build-cache --parallel --daemon --warning-mode all --stacktrace
+          #./gradlew assembleleanbackrelease --build-cache --parallel --daemon --warning-mode all --stacktrace
       - name: Upload APK
         uses: actions/upload-artifact@v3.1.2
         with:
