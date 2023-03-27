@@ -71,7 +71,7 @@ jobs:
         run: |
           if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
-          ./gradlew assembleRelease --stacktrace      
+          ./gradlew assembleRelease --stacktrace --build-cache --parallel --daemon --warning-mode all      
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
       
      
@@ -120,7 +120,7 @@ jobs:
       - name: Check existing tag
         if: ${{true}}
         env:
-          TAG_NAME: "v1.0.0"
+          TAG_NAME: "${{ matrix.name }}_${{env.lastcommit}}"
           REMOTE_TAGS: $(git ls-remote --tags origin)
         run: |
           if echo "${{ env.REMOTE_TAGS }}" | grep -q "refs/tags/${{ env.TAG_NAME }}$"; then
@@ -129,7 +129,7 @@ jobs:
           # exit 1
           else
             echo "z=0" >> $GITHUB_ENV
-            echo "Tag does not exist in remote repository."
+            echo "Tag ${{ env.TAG_NAME }} does not exist in remote repository."
           fi
 
       - name: Upload APK
