@@ -9,6 +9,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:    
+        include:
+          - url: "https://github.com/q215613905/TVBoxOS"
+            name: q215613905
+          - url: "https://github.com/takagen99/Box"
+            name: takagen99
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3.4.0
@@ -20,7 +28,7 @@ jobs:
           java-version: '8'
       
       - name: Clone project
-        run: git clone --depth=1 "https://github.com/q215613905/TVBoxOS" project
+        run: git clone --depth=1 "${{ matrix.url }}" project
      
       - name: 获取时间
         run: | 
@@ -33,7 +41,7 @@ jobs:
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
       - name: 更新版本名称
         run: |                                    
-           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'q215613905_${{env.lastcommit}}\'#" project/app/build.gradle
+           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'${{ matrix.name }}_${{env.lastcommit}}\'#" project/app/build.gradle
       - name: Build the app
         working-directory: ./project
         run: |
@@ -44,7 +52,7 @@ jobs:
       - name: 重命名，复制apk
         run: |
           mkdir -p ${{ github.workspace }}/debug/
-          mv project/app/build/outputs/apk/debug/app-debug.apk debug/TVBoxdebug_q215613905_${{env.lastcommit}}.apk
+          mv project/app/build/outputs/apk/debug/app-debug.apk debug/TVBoxdebug_${{ matrix.name }}_${{env.lastcommit}}.apk
           
       - name: upload webdav        
         uses: bxb100/action-upload-webdav@v1
@@ -58,7 +66,7 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: TVBoxdebug_q215613905_${{env.lastcommit}}_${{env.TIMESTAMP}}
+          name: TVBoxdebug_${{ matrix.name }}_${{env.lastcommit}}_${{env.TIMESTAMP}}
           path: debug/*.apk
       
            
