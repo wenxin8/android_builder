@@ -4,15 +4,16 @@ on:
     branches:
       - main
     paths: 
-      - ".github/workflows/tvbox_release.yml"
+      - ".github/workflows/5_tvbox_release.yml"
   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       runZipalign: "1"
-      uploadwebdav: ""
+      uploadwebdav: "1"
       uploadartifact: "1"
+      UploadAssets: "1"
     steps:
       - name: 环境变量
         run: |
@@ -63,7 +64,7 @@ jobs:
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
       
      
-      #优化成功
+      
       - name: Zipalign APK file
         if: ${{ env.runZipalign == true }}
         run: $ANDROID_HOME/build-tools/30.0.3/zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk app-release.apk
@@ -128,7 +129,7 @@ jobs:
           path: releaseapk/*.apk
     
       - name: Release and Upload Assets
-        if: ${{true}}
+        if: ${{env.UploadAssets}}
         uses: ncipollo/release-action@v1
         with:
           name: ${{env.lastcommit}}
