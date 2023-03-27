@@ -16,7 +16,7 @@ jobs:
           distribution: 'temurin'
           java-version: '8'
       - name: Get project name
-        run: echo "PROJECT=$(cat TVBoxOS_q215613905)" >> $GITHUB_ENV
+        run: echo "PROJECT=$(cat project-to-build)" >> $GITHUB_ENV
       - name: Clone project
         run: git clone --depth=1 ${{ env.PROJECT }} project
         
