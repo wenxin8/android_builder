@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:    
-        url: [https://github.com/q215613905/TVBoxOS, https://github.com/takagen99/Box]
+        url: ["https://github.com/q215613905/TVBoxOS", "https://github.com/takagen99/Box"]
         name: [q215613905, takagen99]
     steps:
       - name: 环境变量
