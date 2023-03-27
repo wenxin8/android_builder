@@ -140,7 +140,7 @@ jobs:
           path: releaseapk/*.apk
     
       - name: Release and Upload Assets
-        if: ${{env.UploadAssets}}
+        if: ${{env.UploadAssets && env.z == "0"}}    
         uses: ncipollo/release-action@v1
         with:
           name: ${{ matrix.name }}_${{env.lastcommit}}
