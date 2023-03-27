@@ -19,6 +19,7 @@ jobs:
       matrix:    
         url: ["https://github.com/q215613905/TVBoxOS", "https://github.com/takagen99/Box"]
         name: [q215613905, takagen99]
+        pairing: ["1-1", "2-2"]
     steps:
       - name: 环境变量
         run: |
