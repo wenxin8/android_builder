@@ -1,5 +1,7 @@
 name: release_TVbox
 on:
+  schedule:
+    - cron: '0 16 * * *' # 每天 UTC 时间 16:00 执行，等同于中国时间 24:00
   push:
     branches:
       - main
