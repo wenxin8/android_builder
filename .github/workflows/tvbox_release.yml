@@ -145,7 +145,7 @@ jobs:
         with:
           name: ${{ matrix.name }}_${{env.lastcommit}}
           tag: ${{ matrix.name }}_${{env.lastcommit}}
-          ##token: ${{ secrets.PAT }}
+          token: ${{ secrets.PAT }}
           allowUpdates: true
           removeArtifacts: true
           artifacts: |
