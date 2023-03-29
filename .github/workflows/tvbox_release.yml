@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths: 
-      - ".github/workflows/tvbox_release.yml"
+      - ".github/workflows/_tvbox_release.yml"
   workflow_dispatch:
 jobs:
   build:
@@ -45,7 +45,7 @@ jobs:
       - name: Clone project
         run: git clone --depth=1 "${{ matrix.url }}" project
      
-      - name: 获取时间
+      - name: 获取提交时间
         run: | 
           cd project
           lastcommit="$( git log -1 --pretty=format:%ci)"  #获取指定时区下的最新提交时间戳
@@ -59,7 +59,22 @@ jobs:
           TIMESTAMP=$( date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
           echo "实时时间： $TIMESTAMP"
-      
+   
+        #检查当前操作所属的 tag 是否已经存在于远程仓库
+      - name: Check existing tag
+        if: ${{true}}
+        env:
+          TAG_NAME: "${{ matrix.name }}_${{env.lastcommit}}"
+          REMOTE_TAGS: $(git ls-remote --tags origin)
+        run: |
+          if echo "${{ env.REMOTE_TAGS }}" | grep -q "refs/tags/${{ env.TAG_NAME }}$"; then
+            echo "z=1" >> $GITHUB_ENV
+            echo "Tag ${{ env.TAG_NAME }} already exists in remote repository."
+          # exit 1
+          else
+            echo "z=0" >> $GITHUB_ENV
+            echo "Tag ${{ env.TAG_NAME }} does not exist in remote repository."
+          fi
       - name: 更新版本名称
         run: |                                    
            sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'${{ matrix.name }}_${{env.lastcommit}}\'#" project/app/build.gradle
@@ -132,21 +147,7 @@ jobs:
            webdav_upload_path: "/"
            files: "./releaseapk/*.apk"
       
-      #检查当前操作所属的 tag 是否已经存在于远程仓库
-      - name: Check existing tag
-        if: ${{true}}
-        env:
-          TAG_NAME: "${{ matrix.name }}_${{env.lastcommit}}"
-          REMOTE_TAGS: $(git ls-remote --tags origin)
-        run: |
-          if echo "${{ env.REMOTE_TAGS }}" | grep -q "refs/tags/${{ env.TAG_NAME }}$"; then
-            echo "z=1" >> $GITHUB_ENV
-            echo "Tag ${{ env.TAG_NAME }} already exists in remote repository."
-          # exit 1
-          else
-            echo "z=0" >> $GITHUB_ENV
-            echo "Tag ${{ env.TAG_NAME }} does not exist in remote repository."
-          fi
+      
       - name: List APKs_2
         run: |
           find ${{ github.workspace }} -type f -iname "*.apk"
