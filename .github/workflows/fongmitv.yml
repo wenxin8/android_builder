@@ -15,7 +15,8 @@ jobs:
         include:
           - url: "https://github.com/FongMi/TV"
             name: FongMiTV
- 
+    env:
+      TZ: Asia/Shanghai
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3.4.0
@@ -46,7 +47,7 @@ jobs:
           echo "leanback_lastcommit=$leanback_lastcommit" >> $GITHUB_ENV
           echo "leanback_lastcommit:$leanback_lastcommit"
           
-          TIMESTAMP=$(TZ=Asia/Shanghai  date +'%Y%m%d-%H%M')
+          TIMESTAMP=$(  date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
           echo "实时北京时间TIMESTAMP=$TIMESTAMP"
       - name: 更新版本名称
