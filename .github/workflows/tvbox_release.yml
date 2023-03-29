@@ -149,13 +149,13 @@ jobs:
           fi
       - name: List APKs_2
         run: |
-          find ./project/ -type f -iname "*.apk"
+          find ${{ github.workspace }} -type f -iname "*.apk"
       - name: Upload APK
         if:  ${{env.uploadartifact}}
         uses: actions/upload-artifact@v3.1.2
         with:
           name: TVBox_${{ matrix.name }}_${{env.lastcommit}}_${{env.TIMESTAMP}}_${{env.z}}
-          path: ${{ github.workspace }}/*.apk
+          path: releaseapk/*.apk
     
       - name: Release and Upload Assets
         if: ${{env.UploadAssets && env.z == '0'}}    
