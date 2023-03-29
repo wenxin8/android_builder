@@ -10,8 +10,9 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest     
     env:
+      TZ: Asia/Shanghai
       runZipalign: "1"
       uploadwebdav: "1"
       uploadartifact: "1"
@@ -24,7 +25,7 @@ jobs:
             name: q215613905
           - url: "https://github.com/takagen99/Box"
             name: takagen99
-      
+    
     steps:
       - name: 环境变量
         run: |
@@ -47,12 +48,17 @@ jobs:
       - name: 获取时间
         run: | 
           cd project
-          lastcommit="$(TZ=Asia/Shanghai git log -1 --pretty=format:%ci)"  #获取指定时区下的最新提交时间戳
-          lastcommit=$(echo $lastcommit | sed 's/ [+-][0-9]\{4\}//g')  #时间戳字符串中的空格和加号后面的时区信息去掉
+          lastcommit="$( git log -1 --pretty=format:%ci)"  #获取指定时区下的最新提交时间戳
+          ehcho "最新提交时间： $lastcommit"
+          #lastcommit=$(echo $lastcommit | sed 's/ [+-][0-9]\{4\}//g')  #时间戳字符串中的空格和加号后面的时区信息去掉
           lastcommit=$(date --date="$lastcommit" +'%Y%m%d-%H%M')  #将该时间戳格式化为 yyyymmdd-hhmm 的形式
+          echo "格式化时间： $lastcommit"
           echo "lastcommit=$lastcommit" >> $GITHUB_ENV
-          TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')
+          echo "lastcommit： $lastcommit 已添加到环境变量"
+          
+          TIMESTAMP=$( date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
+          echo "实时时间： $TIMESTAMP"
       
       - name: 更新版本名称
         run: |                                    
