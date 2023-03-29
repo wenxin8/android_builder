@@ -1,20 +1,16 @@
 name: android_build
 
 on:
-  push:
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      product: "mobile"
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3.4.0
   
       - name: Setup Java JDK
-        if: ${{false}}
         uses: actions/setup-java@v3.10.0
         with:
           distribution: 'temurin'
@@ -25,16 +21,13 @@ jobs:
         run: git clone --depth=1 ${{ env.PROJECT }} project
         
       - name: Build the app
-        continue-on-error: true
         working-directory: ./project
         run: |
-          #if [ ! -f "gradlew" ]; then gradle wrapper; fi
+          if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
-          ./gradlew assemble${{ env.product }}release --build-cache --parallel --daemon --warning-mode all --stacktrace
-          #./gradlew assembleleanbackrelease --build-cache --parallel --daemon --warning-mode all --stacktrace
+          ./gradlew assembleDebug --stacktrace
       - name: Upload APK
         uses: actions/upload-artifact@v3.1.2
         with:
           name: my-build-apk
           path: ./**/*.apk
-
