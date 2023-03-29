@@ -4,7 +4,7 @@ on:
     - cron: '0 16 * * *' # 每天 UTC 时间 16:00 执行，等同于中国时间 24:00
   push:
     paths: 
-      - ".github/workflows/_tvbox_debug.yml"
+      - ".github/workflows/tvbox_debug.yml"
   workflow_dispatch:
 jobs:
   build:
@@ -57,7 +57,7 @@ jobs:
       - name: upload webdav        
         uses: bxb100/action-upload-webdav@v1
         with:
-           webdav_address: https://app.koofr.net/dav/OneDrive/github
+           webdav_address: https://app.koofr.net/dav/OneDrive/github/TVBoxdebug
            webdav_username: ${{secrets.WEBDAV_USERNAME}}
            webdav_password: ${{secrets.WEBDAV_PASSWORD}}
            webdav_upload_path: "/"
