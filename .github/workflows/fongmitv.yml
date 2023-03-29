@@ -37,7 +37,7 @@ jobs:
           cd project
           #lastcommit="$(TZ=UTC+8 git log -1 --pretty=format:%ci)"  #获取指定时区下的最新提交时间戳
           
-          leanback_lastcommit=$(TZ=UTC+8 git log -1 --format="%cd" --date=iso-strict release/)
+          leanback_lastcommit=$( git log -1 --format="%cd" --date=iso-strict release/)
           echo "Latest commit time of file_name is $leanback_lastcommit"
           #leanback_lastcommit=$(echo $leanback_lastcommit | sed 's/ [+-][0-9]\{4\}//g')  #时间戳字符串中的空格和加号后面的时区信息去掉      
           #echo "leanback_lastcommit:$leanback_lastcommit"
@@ -46,7 +46,7 @@ jobs:
           echo "leanback_lastcommit=$leanback_lastcommit" >> $GITHUB_ENV
           echo "leanback_lastcommit:$leanback_lastcommit"
           
-          TIMESTAMP=$(TZ=UTC+8  cut -d'+' -f1 | xargs -I{} date -d {} +'%Y%m%d-%H%M' date +'%Y%m%d-%H%M')
+          TIMESTAMP=$(  date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
           echo "实时北京时间TIMESTAMP=$TIMESTAMP"
       - name: 更新版本名称
