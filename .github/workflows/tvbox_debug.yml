@@ -54,7 +54,7 @@ jobs:
           mkdir -p ${{ github.workspace }}/debug/
           mv project/app/build/outputs/apk/debug/app-debug.apk debug/TVBoxdebug_${{ matrix.name }}_${{env.lastcommit}}.apk
           
-      - name: upload webdav        
+      - name: upload webdav_OneDrive        
         uses: bxb100/action-upload-webdav@v1
         with:
            webdav_address: https://app.koofr.net/dav/OneDrive/github/TVBoxdebug
@@ -62,7 +62,14 @@ jobs:
            webdav_password: ${{secrets.WEBDAV_PASSWORD}}
            webdav_upload_path: "/"
            files: "./debug/*.apk"
-
+      - name: upload webdav_Koofr
+        uses: bxb100/action-upload-webdav@v1
+        with:
+           webdav_address: https://app.koofr.net/dav/Koofr/github/TVBoxdebug
+           webdav_username: ${{secrets.WEBDAV_USERNAME}}
+           webdav_password: ${{secrets.WEBDAV_PASSWORD}}
+           webdav_upload_path: "/"
+           files: "./debug/*.apk"
       - name: Upload APK
         uses: actions/upload-artifact@v3.1.2
         with:
