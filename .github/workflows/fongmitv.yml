@@ -54,7 +54,7 @@ jobs:
           ./gradlew assembleDebug --stacktrace      
     
       - name: 重命名，复制apk
-        if: ${{false}}
+        if: ${{true}}
         run: |
           mkdir -p ${{ github.workspace }}/upload/
           mv project/release/leanback-java.apk upload/${{ matrix.name }}_leanback-java_${{env.lastcommit}}.apk
