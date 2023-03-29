@@ -46,7 +46,7 @@ jobs:
           echo "leanback_lastcommit=$leanback_lastcommit" >> $GITHUB_ENV
           echo "leanback_lastcommit:$leanback_lastcommit"
           
-          TIMESTAMP=$(TZ=UTC+8 date +'%Y%m%d-%H%M')
+          TIMESTAMP=$(TZ=UTC+8  cut -d'+' -f1 | xargs -I{} date -d {} +'%Y%m%d-%H%M' date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
           echo "实时北京时间TIMESTAMP=$TIMESTAMP"
       - name: 更新版本名称
