@@ -35,10 +35,14 @@ jobs:
       - name: 获取时间
         run: | 
           cd project
-          lastcommit="$(TZ=Asia/Shanghai git log -1 --pretty=format:%ci)"  #获取指定时区下的最新提交时间戳
-          lastcommit=$(echo $lastcommit | sed 's/ [+-][0-9]\{4\}//g')  #时间戳字符串中的空格和加号后面的时区信息去掉
-          lastcommit=$(date --date="$lastcommit" +'%Y%m%d-%H%M')  #将该时间戳格式化为 yyyymmdd-hhmm 的形式
-          echo "lastcommit=$lastcommit" >> $GITHUB_ENV
+          #lastcommit="$(TZ=Asia/Shanghai git log -1 --pretty=format:%ci)"  #获取指定时区下的最新提交时间戳
+          
+          leanback_lastcommit=$(TZ=Asia/Shanghai git log -1 --format="%cd" --date=iso-strict project/release/)
+          echo "Latest commit time of file_name is $leanback_lastcommit"
+          leanback_lastcommit=$(echo $leanback_lastcommit | sed 's/ [+-][0-9]\{4\}//g')  #时间戳字符串中的空格和加号后面的时区信息去掉
+          leanback_lastcommit=$(date --date="$leanback_lastcommit" +'%Y%m%d-%H%M')  #将该时间戳格式化为 yyyymmdd-hhmm 的形式
+          echo "leanback_lastcommit=$lastcommit" >> $GITHUB_ENV
+          
           TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
       - name: 更新版本名称
@@ -57,10 +61,10 @@ jobs:
         if: ${{true}}
         run: |
           mkdir -p ${{ github.workspace }}/upload/
-          mv project/release/leanback-java.apk upload/${{ matrix.name }}_leanback-java_${{env.lastcommit}}.apk
-          mv project/release/leanback-python.apk upload/${{ matrix.name }}_leanback-python_${{env.lastcommit}}.apk
-          mv project/release/mobile-java.apk upload/${{ matrix.name }}_mobile-java_${{env.lastcommit}}.apk
-          mv project/release/mobile-python.apk upload/${{ matrix.name }}_mobile-python_${{env.lastcommit}}.apk
+          mv project/release/leanback-java.apk upload/${{ matrix.name }}_leanback-java_${{env.leanback_lastcommit}}.apk
+          mv project/release/leanback-python.apk upload/${{ matrix.name }}_leanback-python_${{env.leanback_lastcommit}}.apk
+          mv project/release/mobile-java.apk upload/${{ matrix.name }}_mobile-java_${{env.leanback_lastcommit}}.apk
+          mv project/release/mobile-python.apk upload/${{ matrix.name }}_mobile-python_${{env.leanback_lastcommit}}.apk
           
           
       - name: upload webdav        
