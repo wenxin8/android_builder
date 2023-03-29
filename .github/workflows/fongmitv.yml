@@ -72,7 +72,15 @@ jobs:
           mv project/release/mobile-python.apk upload/${{ matrix.name }}_mobile-python_${{env.leanback_lastcommit}}.apk
           
           
-      - name: upload webdav        
+      - name: upload webdav_Koofr        
+        uses: bxb100/action-upload-webdav@v1
+        with:
+           webdav_address: https://app.koofr.net/dav/Koofr/github/FonMiTV
+           webdav_username: ${{secrets.WEBDAV_USERNAME}}
+           webdav_password: ${{secrets.WEBDAV_PASSWORD}}
+           webdav_upload_path: "/"
+           files: "./upload/*.apk"
+      - name: upload webdav_OneDrive       
         uses: bxb100/action-upload-webdav@v1
         with:
            webdav_address: https://app.koofr.net/dav/OneDrive/github/FonMiTV
@@ -80,7 +88,6 @@ jobs:
            webdav_password: ${{secrets.WEBDAV_PASSWORD}}
            webdav_upload_path: "/"
            files: "./upload/*.apk"
-
       - name: Upload APK
         if: ${{false}}
         uses: actions/upload-artifact@v3.1.2
