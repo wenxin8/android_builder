@@ -39,7 +39,8 @@ jobs:
           
           leanback_lastcommit=$(TZ=UTC+8 git log -1 --format="%cd" --date=iso-strict release/)
           echo "Latest commit time of file_name is $leanback_lastcommit"
-          leanback_lastcommit=$(echo $leanback_lastcommit | sed 's/ [+-][0-9]\{4\}//g')  #时间戳字符串中的空格和加号后面的时区信息去掉
+          #leanback_lastcommit=$(echo $leanback_lastcommit | sed 's/ [+-][0-9]\{4\}//g')  #时间戳字符串中的空格和加号后面的时区信息去掉
+          leanback_lastcommit=$(echo $leanback_lastcommit | cut -d'+' -f1 | xargs -I{} date -d {} +'%Y%m%d-%H%M')
           echo "leanback_lastcommit:$leanback_lastcommit"
           leanback_lastcommit=$(date --date="$leanback_lastcommit" +'%Y%m%d-%H%M')  #将该时间戳格式化为 yyyymmdd-hhmm 的形式
         
