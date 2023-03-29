@@ -43,6 +43,8 @@ jobs:
           #leanback_lastcommit=$(echo $leanback_lastcommit | sed 's/ [+-][0-9]\{4\}//g')  #时间戳字符串中的空格和加号后面的时区信息去掉      
           #echo "leanback_lastcommit:$leanback_lastcommit"
           #leanback_lastcommit=$(date --date="$leanback_lastcommit" +'%Y%m%d-%H%M')  #将该时间戳格式化为 yyyymmdd-hhmm 的形式
+          testtime=$(date --date="$leanback_lastcommit" +'%Y%m%d-%H%M')
+          echo "$leanback_lastcommit"
           leanback_lastcommit=$(echo $leanback_lastcommit | cut -d'+' -f1 | xargs -I{} date -d {} +'%Y%m%d-%H%M')
           echo "leanback_lastcommit=$leanback_lastcommit" >> $GITHUB_ENV
           echo "leanback_lastcommit:$leanback_lastcommit"
