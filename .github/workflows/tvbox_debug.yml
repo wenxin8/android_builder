@@ -61,7 +61,7 @@ jobs:
            webdav_username: ${{secrets.WEBDAV_USERNAME}}
            webdav_password: ${{secrets.WEBDAV_PASSWORD}}
            webdav_upload_path: "/"
-           files: "./debug/*.apk"
+           files: "./debug/"
 
       - name: Upload APK
         uses: actions/upload-artifact@v3.1.2
