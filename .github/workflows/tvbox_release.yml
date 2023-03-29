@@ -14,7 +14,7 @@ jobs:
     env:
       TZ: Asia/Shanghai
       runZipalign: "1"
-      uploadwebdav: "1"
+      uploadwebdav: ""
       uploadartifact: "1"
       UploadAssets: "1"
     strategy:
@@ -79,9 +79,10 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace --build-cache --parallel --daemon --warning-mode all      
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
-      
-     
-      
+      - name: List APKs
+        run: |
+          find ./project/ -type f -iname "*.apk"
+        
       - name: Zipalign APK file
         if: ${{ env.runZipalign == true }}
         run: $ANDROID_HOME/build-tools/30.0.3/zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk app-release.apk
