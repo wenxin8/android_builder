@@ -79,7 +79,7 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace --build-cache --parallel --daemon --warning-mode all      
          # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
-      - name: List APKs
+      - name: List APKs_1
         run: |
           find ./project/ -type f -iname "*.apk"
         
@@ -147,7 +147,9 @@ jobs:
             echo "z=0" >> $GITHUB_ENV
             echo "Tag ${{ env.TAG_NAME }} does not exist in remote repository."
           fi
-
+      - name: List APKs_2
+        run: |
+          find ./project/ -type f -iname "*.apk"
       - name: Upload APK
         if:  ${{env.uploadartifact}}
         uses: actions/upload-artifact@v3.1.2
