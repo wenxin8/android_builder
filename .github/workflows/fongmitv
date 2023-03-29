@@ -1,0 +1,80 @@
+name: fongmitv
+on:
+  schedule:
+    - cron: '0 16 * * *' # 每天 UTC 时间 16:00 执行，等同于中国时间 24:00
+  push:
+    paths: 
+      - ".github/workflows/_tvbox_debug.yml"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:    
+        include:
+          - url: "https://github.com/FongMi/TV"
+            name: FongMiTV
+ 
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3.4.0
+  
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.10.0
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+      
+      - name: Clone project
+        run: |
+		  git clone --depth=1 "${{ matrix.url }}" project
+		  cd project
+		  git fetch origin
+          git checkout release
+				
+      - name: 获取时间
+        run: | 
+          cd project
+          lastcommit="$(TZ=Asia/Shanghai git log -1 --pretty=format:%ci)"  #获取指定时区下的最新提交时间戳
+          lastcommit=$(echo $lastcommit | sed 's/ [+-][0-9]\{4\}//g')  #时间戳字符串中的空格和加号后面的时区信息去掉
+          lastcommit=$(date --date="$lastcommit" +'%Y%m%d-%H%M')  #将该时间戳格式化为 yyyymmdd-hhmm 的形式
+          echo "lastcommit=$lastcommit" >> $GITHUB_ENV
+          TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')
+          echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
+      - name: 更新版本名称
+        if: {{false}}
+        run: |                                    
+           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'${{ matrix.name }}_${{env.lastcommit}}\'#" project/app/build.gradle
+      - name: Build the app
+        working-directory: ./project
+        run: |
+          if [ ! -f "gradlew" ]; then gradle wrapper; fi
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace      
+    
+      - name: 重命名，复制apk
+        if: {{false}}
+        run: |
+          mkdir -p ${{ github.workspace }}/upload/
+          mv project/release/leanback-java.apk upload/${{ matrix.name }}_leanback-java_${{env.lastcommit}}.apk
+          mv project/release/leanback-python.apk upload/${{ matrix.name }}_leanback-python_${{env.lastcommit}}.apk
+          mv project/release/mobile-java.apk upload/${{ matrix.name }}_mobile-java_${{env.lastcommit}}.apk
+          mv project/release/mobile-python.apk upload/${{ matrix.name }}_mobile-python_${{env.lastcommit}}.apk
+          
+          
+      - name: upload webdav        
+        uses: bxb100/action-upload-webdav@v1
+        with:
+           webdav_address: https://app.koofr.net/dav/OneDrive/github
+           webdav_username: ${{secrets.WEBDAV_USERNAME}}
+           webdav_password: ${{secrets.WEBDAV_PASSWORD}}
+           webdav_upload_path: "/"
+           files: "./upload/*.apk"
+
+      - name: Upload APK
+        if: {{false}}
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: TVBoxdebug_${{ matrix.name }}_${{env.lastcommit}}_${{env.TIMESTAMP}}
+          path: debug/*.apk
