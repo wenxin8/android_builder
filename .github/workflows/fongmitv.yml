@@ -4,7 +4,7 @@ on:
     - cron: '0 4,16 * * *' # 每天 UTC 时间的 4:00 和 16:00 执行任务，对应的是中国时间的 12:00 和 24:00
   push:
     paths: 
-      - ".github/workflows/_tvbox_debug.yml"
+      - ".github/workflows/fongmitv.yml"
   workflow_dispatch:
 jobs:
   build:
@@ -46,7 +46,7 @@ jobs:
           echo "leanback_lastcommit=$leanback_lastcommit" >> $GITHUB_ENV
           echo "leanback_lastcommit:$leanback_lastcommit"
           
-          TIMESTAMP=$(  date +'%Y%m%d-%H%M')
+          TIMESTAMP=$(TZ=UTC+8  date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
           echo "实时北京时间TIMESTAMP=$TIMESTAMP"
       - name: 更新版本名称
