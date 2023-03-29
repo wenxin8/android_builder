@@ -1,0 +1,172 @@
+name: release_TVbox
+on:
+  schedule:
+    - cron: '0 16 * * *' # 每天 UTC 时间 16:00 执行，等同于中国时间 24:00
+  push:
+    branches:
+      - main
+    paths: 
+      - ".github/workflows/_tvbox_release.yml"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest     
+    env:
+      TZ: Asia/Shanghai
+      runZipalign: "1"
+      uploadwebdav: "1"
+      uploadartifact: "1"
+      UploadAssets: "1"
+    strategy:
+      fail-fast: false
+      matrix:    
+        include:
+          - url: "https://github.com/q215613905/TVBoxOS"
+            name: q215613905
+          - url: "https://github.com/takagen99/Box"
+            name: takagen99
+    
+    steps:
+      - name: 环境变量
+        run: |
+          echo "a=" >> $GITHUB_ENV
+      - name: Checkout the code
+        uses: actions/checkout@v3.4.0
+      #  with:
+      #   repository: owner/repo-name # 此处填写您要构建的 Github 仓库信息
+      #   ref: main # 此处填写您要构建的 Github 仓库分支或 tag
+      #   path: project # 在此处指定目标文件夹     
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.10.0
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+      
+      - name: Clone project
+        run: git clone --depth=1 "${{ matrix.url }}" project
+     
+      - name: 获取提交时间
+        run: | 
+          cd project
+          lastcommit="$( git log -1 --pretty=format:%ci)"  #获取指定时区下的最新提交时间戳
+          echo "最新提交时间： $lastcommit"
+          #lastcommit=$(echo $lastcommit | sed 's/ [+-][0-9]\{4\}//g')  #时间戳字符串中的空格和加号后面的时区信息去掉
+          lastcommit=$(date --date="$lastcommit" +'%Y%m%d-%H%M')  #将该时间戳格式化为 yyyymmdd-hhmm 的形式
+          echo "格式化时间： $lastcommit"
+          echo "lastcommit=$lastcommit" >> $GITHUB_ENV
+          echo "lastcommit： $lastcommit 已添加到环境变量"
+          
+          TIMESTAMP=$( date +'%Y%m%d-%H%M')
+          echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
+          echo "实时时间： $TIMESTAMP"
+   
+        #检查当前操作所属的 tag 是否已经存在于远程仓库
+      - name: Check existing tag
+        if: ${{true}}
+        env:
+          TAG_NAME: "${{ matrix.name }}_${{env.lastcommit}}"
+          REMOTE_TAGS: $(git ls-remote --tags origin)
+        run: |
+          if echo "${{ env.REMOTE_TAGS }}" | grep -q "refs/tags/${{ env.TAG_NAME }}$"; then
+            echo "z=1" >> $GITHUB_ENV
+            echo "Tag ${{ env.TAG_NAME }} already exists in remote repository."
+          # exit 1
+          else
+            echo "z=0" >> $GITHUB_ENV
+            echo "Tag ${{ env.TAG_NAME }} does not exist in remote repository."
+          fi
+      - name: 更新版本名称
+        run: |                                    
+           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'${{ matrix.name }}_${{env.lastcommit}}\'#" project/app/build.gradle
+      
+      - name: Setup Android SDK Tools
+        uses: android-actions/setup-android@v2.0.2
+      - name: Install Android Build-Tools and update environment variables
+        run: |
+          export ANDROID_HOME=/usr/local/android-sdk/
+          export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/30.0.3/
+          echo y | sdkmanager --install "build-tools;30.0.3"
+      
+      - name: Build the app
+        working-directory: ./project
+        run: |
+          if [ ! -f "gradlew" ]; then gradle wrapper; fi
+          chmod +x gradlew
+          ./gradlew assembleRelease --stacktrace --build-cache --parallel --daemon --warning-mode all      
+         # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
+      - name: List APKs_1
+        run: |
+          find ${{ github.workspace }} -type f -iname "*.apk"
+        
+      - name: Zipalign APK file
+        if: ${{ env.runZipalign == true }}
+        run: $ANDROID_HOME/build-tools/30.0.3/zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk app-release.apk
+      #- name: Zipalign APK file # 优化 APK 文件
+      # run: zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk release/app-release.apk
+      
+      - name: Download keystore
+        env:
+           TOKEN: ${{ secrets.PAT }}
+        run: |
+           curl -sL -H "Authorization: token $TOKEN" -o keystore.jks ${{ secrets.KEYSTORE }}\
+      
+      - name: 签名 APK
+        run: |
+          mkdir -p ${{ github.workspace }}/releaseapk/
+          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
+            -keystore keystore.jks \
+            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
+            -keypass ${{ secrets.KEY_PASSWORD }} \
+            -signedjar releaseapk/TVBox_${{ matrix.name }}_${{env.lastcommit}}.apk project/app/build/outputs/apk/release/app-release-unsigned.apk wx        
+            
+      
+     # - name: 重命名apk
+     #   run: |      
+     #     mv project/app/build/outputs/apk/release/app-release.apk project/app/build/outputs/apk/release/TVBbox_q215613905_${TIMESTAMP}_release.apk  
+          
+      #- name: Create Directory and Copy APKs
+       # run: |
+          #mkdir -p ${{ github.workspace }}/releaseapk/        
+         # cp project/app/build/outputs/apk/release/*.apk project/  #####${{ github.workspace }}##3
+      - name: upload webdav OneDrive  
+        if: ${{env.uploadwebdav}}
+        uses: bxb100/action-upload-webdav@v1
+        with:
+           webdav_address: https://app.koofr.net/dav/OneDrive/github/TVBox
+           webdav_username: ${{secrets.WEBDAV_USERNAME}}
+           webdav_password: ${{secrets.WEBDAV_PASSWORD}}
+           webdav_upload_path: "/"
+           files: "./releaseapk/*.apk"
+      - name: upload webdav Koofr  
+        if: ${{env.uploadwebdav}}
+        uses: bxb100/action-upload-webdav@v1
+        with:
+           webdav_address: https://app.koofr.net/dav/Koofr/github/TVBox
+           webdav_username: ${{secrets.WEBDAV_USERNAME}}
+           webdav_password: ${{secrets.WEBDAV_PASSWORD}}
+           webdav_upload_path: "/"
+           files: "./releaseapk/*.apk"
+      
+      
+      - name: List APKs_2
+        run: |
+          find ${{ github.workspace }} -type f -iname "*.apk"
+      - name: Upload APK
+        if:  ${{env.uploadartifact}}
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: TVBox_${{ matrix.name }}_${{env.lastcommit}}_${{env.TIMESTAMP}}_${{env.z}}
+          path: releaseapk/*.apk
+    
+      - name: Release and Upload Assets
+        if: ${{env.UploadAssets && env.z == '0'}}    
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ matrix.name }}_${{env.lastcommit}}
+          tag: ${{ matrix.name }}_${{env.lastcommit}}
+          token: ${{ secrets.PAT }}
+          allowUpdates: true
+          removeArtifacts: true
+          artifacts: |
+            releaseapk/*.apk
+      

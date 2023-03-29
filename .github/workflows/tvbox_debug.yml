@@ -1,0 +1,86 @@
+name: tvbox_debug
+on:
+  schedule:
+    - cron: '0 16 * * *' # 每天 UTC 时间 16:00 执行，等同于中国时间 24:00
+  push:
+    paths: 
+      - ".github/workflows/tvbox_debug.yml"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:    
+        include:
+          - url: "https://github.com/q215613905/TVBoxOS"
+            name: q215613905
+          - url: "https://github.com/takagen99/Box"
+            name: takagen99
+    env:
+      TZ: Asia/Shanghai
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3.4.0
+  
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.10.0
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+      
+      - name: Clone project
+        run: git clone --depth=1 "${{ matrix.url }}" project
+     
+      - name: 获取时间
+        run: | 
+          cd project
+          lastcommit="$( git log -1 --pretty=format:%ci)"  #获取指定时区下的最新提交时间戳
+          echo "$lastcommit"
+          #lastcommit=$(echo $lastcommit | sed 's/ [+-][0-9]\{4\}//g')  #时间戳字符串中的空格和加号后面的时区信息去掉
+          #echo "$lastcommit"
+          lastcommit=$(date --date="$lastcommit" +'%Y%m%d-%H%M')  #将该时间戳格式化为 yyyymmdd-hhmm 的形式
+          echo "lastcommit=$lastcommit" >> $GITHUB_ENV
+          echo "$lastcommit"
+         
+          TIMESTAMP=$( date +'%Y%m%d-%H%M')
+          echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
+          echo "$TIMESTAMP"
+      - name: 更新版本名称
+        run: |                                    
+           sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'${{ matrix.name }}_${{env.lastcommit}}\'#" project/app/build.gradle
+      - name: Build the app
+        working-directory: ./project
+        run: |
+          if [ ! -f "gradlew" ]; then gradle wrapper; fi
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace      
+    
+      - name: 重命名，复制apk
+        run: |
+          mkdir -p ${{ github.workspace }}/debug/
+          mv project/app/build/outputs/apk/debug/app-debug.apk debug/TVBoxdebug_${{ matrix.name }}_${{env.lastcommit}}.apk
+          
+      - name: upload webdav_OneDrive        
+        uses: bxb100/action-upload-webdav@v1
+        with:
+           webdav_address: https://app.koofr.net/dav/OneDrive/github/TVBoxdebug
+           webdav_username: ${{secrets.WEBDAV_USERNAME}}
+           webdav_password: ${{secrets.WEBDAV_PASSWORD}}
+           webdav_upload_path: "/"
+           files: "./debug/*.apk"
+      - name: upload webdav_Koofr
+        uses: bxb100/action-upload-webdav@v1
+        with:
+           webdav_address: https://app.koofr.net/dav/Koofr/github/TVBoxdebug
+           webdav_username: ${{secrets.WEBDAV_USERNAME}}
+           webdav_password: ${{secrets.WEBDAV_PASSWORD}}
+           webdav_upload_path: "/"
+           files: "./debug/*.apk"
+      - name: Upload APK
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: TVBoxdebug_${{ matrix.name }}_${{env.lastcommit}}_${{env.TIMESTAMP}}
+          path: debug/*.apk
+      
+           
