@@ -155,7 +155,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.2
         with:
           name: TVBox_${{ matrix.name }}_${{env.lastcommit}}_${{env.TIMESTAMP}}_${{env.z}}
-          path: releaseapk/*.apk
+          path: ${{ github.workspace }}/*.apk
     
       - name: Release and Upload Assets
         if: ${{env.UploadAssets && env.z == '0'}}    
