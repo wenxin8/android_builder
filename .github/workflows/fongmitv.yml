@@ -28,11 +28,10 @@ jobs:
       
       - name: Clone project
         run: |
-		  git clone --depth=1 "${{ matrix.url }}" project
-		  cd project
-		  git fetch origin
-          git checkout release
-				
+          git clone --depth=1 "${{ matrix.url }}" project
+          cd project
+          git fetch origin
+          git checkout release			
       - name: 获取时间
         run: | 
           cd project
@@ -43,7 +42,7 @@ jobs:
           TIMESTAMP=$(TZ=Asia/Shanghai date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
       - name: 更新版本名称
-        if: {{false}}
+        if: ${{false}}
         run: |                                    
            sed -i "/versionName/s#[0-9a-zA-Z_\.\'\"-]\+\$#\'${{ matrix.name }}_${{env.lastcommit}}\'#" project/app/build.gradle
       - name: Build the app
@@ -54,7 +53,7 @@ jobs:
           ./gradlew assembleDebug --stacktrace      
     
       - name: 重命名，复制apk
-        if: {{false}}
+        if: ${{false}}
         run: |
           mkdir -p ${{ github.workspace }}/upload/
           mv project/release/leanback-java.apk upload/${{ matrix.name }}_leanback-java_${{env.lastcommit}}.apk
@@ -73,7 +72,7 @@ jobs:
            files: "./upload/*.apk"
 
       - name: Upload APK
-        if: {{false}}
+        if: ${{false}}
         uses: actions/upload-artifact@v3.1.2
         with:
           name: TVBoxdebug_${{ matrix.name }}_${{env.lastcommit}}_${{env.TIMESTAMP}}
