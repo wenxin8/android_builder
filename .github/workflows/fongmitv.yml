@@ -111,7 +111,7 @@ jobs:
            webdav_upload_path: "/"
            files: "./upload/*.apk"
       - name: Upload APK
-        if: ${{false}}
+        if: ${{true}}
         uses: actions/upload-artifact@v3.1.2
         with:
           name: ${{ matrix.name }}_${{env.TIMESTAMP}}
