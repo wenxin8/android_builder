@@ -40,13 +40,17 @@ jobs:
           ##leanback_lastcommit=$( git log -1 --format="%cd" --date=iso-strict release/) ##2023-03-29T19:14:27+08:00
           leanback_lastcommit=$( git log -1 --pretty=format:%ci  release/leanback-java.apk)  #获取指定时区下的最新提交时间戳2023-03-29 19:14:27 +0800
           echo "Latest commit time of file_name is $leanback_lastcommit"
-          testtime=$(date --date="$leanback_lastcommit" +'%Y%m%d-%H%M')        
-          echo "testtime: $testtime"
+          leanback_lastcommit=$(date --date="$leanback_lastcommit" +'%Y%m%d-%H%M')        
+          echo "leanback_lastcommit: $testtime"
           
-          leanback_lastcommit=$(echo $leanback_lastcommit | cut -d'+' -f1 | xargs -I{} date -d {} +'%Y%m%d-%H%M')
+          #leanback_lastcommit=$(echo $leanback_lastcommit | cut -d'+' -f1 | xargs -I{} date -d {} +'%Y%m%d-%H%M')
           echo "leanback_lastcommit=$leanback_lastcommit" >> $GITHUB_ENV
           echo "leanback_lastcommit: $leanback_lastcommit"
           
+          mobile_lastcommit=$( git log -1 --pretty=format:%ci  release/mobile-java.apk)
+          mobile_lastcommit=$(date --date="$mobile_lastcommit" +'%Y%m%d-%H%M')
+          echo "mobile_lastcommit=$mobile_lastcommit" >> $GITHUB_ENV
+          echo "mobile_lastcommit: $mobile_lastcommit"
           TIMESTAMP=$(  date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
           echo "实时时间: $TIMESTAMP"
