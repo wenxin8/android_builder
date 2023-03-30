@@ -72,8 +72,8 @@ jobs:
           mkdir -p ${{ github.workspace }}/upload/
           mv project/release/leanback-java.apk upload/${{ matrix.name }}_leanback-java_${{env.leanback_lastcommit}}.apk
           mv project/release/leanback-python.apk upload/${{ matrix.name }}_leanback-python_${{env.leanback_lastcommit}}.apk
-          mv project/release/mobile-java.apk upload/${{ matrix.name }}_mobile-java_${{env.leanback_lastcommit}}.apk
-          mv project/release/mobile-python.apk upload/${{ matrix.name }}_mobile-python_${{env.leanback_lastcommit}}.apk
+          mv project/release/mobile-java.apk upload/${{ matrix.name }}_mobile-java_${{env.mobile_lastcommit}}.apk
+          mv project/release/mobile-python.apk upload/${{ matrix.name }}_mobile-python_${{env.mobile_lastcommit}}.apk
           
           
       - name: upload webdav_Koofr        
