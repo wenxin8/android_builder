@@ -74,11 +74,11 @@ jobs:
           mv project/release/leanback-python.apk upload/leanback-python_${{env.leanback_lastcommit}}.apk
           mv project/release/mobile-java.apk upload/mobile-java_${{env.mobile_lastcommit}}.apk
           mv project/release/mobile-python.apk upload/mobile-python_${{env.mobile_lastcommit}}.apk
-      - name: kitat 分支
+      - name: kitkat 分支
         run: | 
           cd project
           git fetch origin
-          git checkout kitat
+          git checkout kitkat
           back_lastcommit=$( git log -1 --pretty=format:%ci  release/leanback.apk)  #获取指定时区下的最新提交时间戳2023-03-29 19:14:27 +0800
           echo "leanback.apk 的最新提交时间： $leanback_lastcommit"
           back_lastcommit=$(date --date="$back_lastcommit" +'%Y%m%d-%H%M')        
