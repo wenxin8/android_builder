@@ -50,9 +50,10 @@ jobs:
           cd project
           lastcommit="$( git log -1 --pretty=format:%ci)"  #获取指定时区下的最新提交时间戳
           echo "最新提交时间： $lastcommit"
-          #lastcommit=$(echo $lastcommit | sed 's/ [+-][0-9]\{4\}//g')  #时间戳字符串中的空格和加号后面的时区信息去掉
+ 
           lastcommit=$(date --date="$lastcommit" +'%Y%m%d-%H%M')  #将该时间戳格式化为 yyyymmdd-hhmm 的形式
           echo "格式化时间： $lastcommit"
+         
           echo "lastcommit=$lastcommit" >> $GITHUB_ENV
           echo "lastcommit： $lastcommit 已添加到环境变量"
           
@@ -93,7 +94,7 @@ jobs:
           if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace --build-cache --parallel --daemon --warning-mode all      
-         # apk_path=$(find ./project -iname "*.apk" -type f | sort -n | tail -1)  
+         
       - name: List APKs_1
         run: |
           find ${{ github.workspace }} -type f -iname "*.apk"
@@ -101,9 +102,7 @@ jobs:
       - name: Zipalign APK file
         if: ${{ env.runZipalign == true }}
         run: $ANDROID_HOME/build-tools/30.0.3/zipalign -v 4 project/app/build/outputs/apk/release/app-release-unsigned.apk app-release.apk
-      #- name: Zipalign APK file # 优化 APK 文件
-      # run: zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk release/app-release.apk
-      
+       
       - name: Download keystore
         env:
            TOKEN: ${{ secrets.PAT }}
@@ -118,16 +117,7 @@ jobs:
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.KEY_PASSWORD }} \
             -signedjar releaseapk/TVBox_${{ matrix.name }}_${{env.lastcommit}}.apk project/app/build/outputs/apk/release/app-release-unsigned.apk wx        
-            
-      
-     # - name: 重命名apk
-     #   run: |      
-     #     mv project/app/build/outputs/apk/release/app-release.apk project/app/build/outputs/apk/release/TVBbox_q215613905_${TIMESTAMP}_release.apk  
-          
-      #- name: Create Directory and Copy APKs
-       # run: |
-          #mkdir -p ${{ github.workspace }}/releaseapk/        
-         # cp project/app/build/outputs/apk/release/*.apk project/  #####${{ github.workspace }}##3
+         
       - name: upload webdav OneDrive  
         if: ${{env.uploadwebdav}}
         uses: bxb100/action-upload-webdav@v1
