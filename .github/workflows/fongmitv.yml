@@ -96,5 +96,5 @@ jobs:
         if: ${{false}}
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: TVBoxdebug_${{ matrix.name }}_${{env.lastcommit}}_${{env.TIMESTAMP}}
-          path: debug/*.apk
+          name: ${{ matrix.name }}_${{env.TIMESTAMP}}
+          path: upload/*.apk
