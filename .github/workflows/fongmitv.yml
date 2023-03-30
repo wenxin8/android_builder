@@ -3,6 +3,8 @@ on:
   schedule:
     - cron: '0 4,16 * * *' # 每天 UTC 时间的 4:00 和 16:00 执行任务，对应的是中国时间的 12:00 和 24:00
   push:
+    branches:
+      - main
     paths: 
       - ".github/workflows/_fongmitv.yml"
   workflow_dispatch:
