@@ -74,8 +74,25 @@ jobs:
           mv project/release/leanback-python.apk upload/leanback-python_${{env.leanback_lastcommit}}.apk
           mv project/release/mobile-java.apk upload/mobile-java_${{env.mobile_lastcommit}}.apk
           mv project/release/mobile-python.apk upload/mobile-python_${{env.mobile_lastcommit}}.apk
+      - name: kitat 分支
+        run: | 
+          cd project
+          git fetch origin
+          git checkout kitat
+          back_lastcommit=$( git log -1 --pretty=format:%ci  release/leanback.apk)  #获取指定时区下的最新提交时间戳2023-03-29 19:14:27 +0800
+          echo "Latest commit time of leanback.apk is $leanback_lastcommit"
+          back_lastcommit=$(date --date="$back_lastcommit" +'%Y%m%d-%H%M')        
+          echo "back_lastcommit: $leanback_lastcommit"
           
+    
+          echo "back_lastcommit=$back_lastcommit" >> $GITHUB_ENV
+          echo "back_lastcommit: $leanback_lastcommit"
+          cd ${{ github.workspace }}
+          mv project/release/leanback.apk upload/leanback_${{env.leanback_lastcommit}}.apk
           
+          cd project
+          git fetch origin
+          git checkout release
       - name: upload webdav_Koofr        
         uses: bxb100/action-upload-webdav@v1
         with:
