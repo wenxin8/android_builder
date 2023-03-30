@@ -39,18 +39,18 @@ jobs:
           #lastcommit="$(TZ=UTC+8 git log -1 --pretty=format:%ci)"  #获取指定时区下的最新提交时间戳2023-03-29 19:14:27 +0800      
           ##leanback_lastcommit=$( git log -1 --format="%cd" --date=iso-strict release/) ##2023-03-29T19:14:27+08:00
           leanback_lastcommit=$( git log -1 --pretty=format:%ci  release/leanback-java.apk)  #获取指定时区下的最新提交时间戳2023-03-29 19:14:27 +0800
-          echo "Latest commit time of file_name is $leanback_lastcommit"
+          echo " leanback-java.apk 的最新提交时间： $leanback_lastcommit"
           leanback_lastcommit=$(date --date="$leanback_lastcommit" +'%Y%m%d-%H%M')        
-          echo "leanback_lastcommit: $leanback_lastcommit"
+          echo "leanback_lastcommit 格式化时间: $leanback_lastcommit"
           
           #leanback_lastcommit=$(echo $leanback_lastcommit | cut -d'+' -f1 | xargs -I{} date -d {} +'%Y%m%d-%H%M')
           echo "leanback_lastcommit=$leanback_lastcommit" >> $GITHUB_ENV
-          echo "leanback_lastcommit: $leanback_lastcommit"
+          echo "leanback_lastcommit: $leanback_lastcommit 添加到环境变量"
           
           mobile_lastcommit=$( git log -1 --pretty=format:%ci  release/mobile-java.apk)
           mobile_lastcommit=$(date --date="$mobile_lastcommit" +'%Y%m%d-%H%M')
           echo "mobile_lastcommit=$mobile_lastcommit" >> $GITHUB_ENV
-          echo "mobile_lastcommit: $mobile_lastcommit"
+          echo "mobile_lastcommit: $mobile_lastcommit 添加到环境变量"
           TIMESTAMP=$(  date +'%Y%m%d-%H%M')
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
           echo "实时时间: $TIMESTAMP"
@@ -74,8 +74,26 @@ jobs:
           mv project/release/leanback-python.apk upload/leanback-python_${{env.leanback_lastcommit}}.apk
           mv project/release/mobile-java.apk upload/mobile-java_${{env.mobile_lastcommit}}.apk
           mv project/release/mobile-python.apk upload/mobile-python_${{env.mobile_lastcommit}}.apk
+      
+      - name: kitkat 分支 
+        run: | 
+          cd project
+          git fetch origin
+          git checkout kitkat
+          back_lastcommit=$( git log -1 --pretty=format:%ci  release/leanback.apk)  #获取指定时区下的最新提交时间戳2023-03-29 19:14:27 +0800
+          echo "leanback.apk 的最新提交时间： $back_lastcommit"
+          back_lastcommit=$(date --date="$back_lastcommit" +'%Y%m%d-%H%M')        
+          echo "back_lastcommit 格式化时间: $back_lastcommit "
           
+    
+          echo "back_lastcommit=$back_lastcommit" >> $GITHUB_ENV
+          echo "back_lastcommit: $back_lastcommit 添加到环境变量"
+          cd ${{ github.workspace }}
+          mv project/release/leanback.apk upload/leanback_$back_lastcommit.apk
           
+          cd project
+          git fetch origin
+          git checkout release
       - name: upload webdav_Koofr        
         uses: bxb100/action-upload-webdav@v1
         with:
@@ -93,8 +111,20 @@ jobs:
            webdav_upload_path: "/"
            files: "./upload/*.apk"
       - name: Upload APK
-        if: ${{false}}
+        if: ${{true}}
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: TVBoxdebug_${{ matrix.name }}_${{env.lastcommit}}_${{env.TIMESTAMP}}
-          path: debug/*.apk
+          name: ${{ matrix.name }}_${{env.TIMESTAMP}}
+          path: upload/*.apk
+      
+      - name: Release and Upload Assets
+        if: ${{true}}    
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ matrix.name }}_${{env.mobile_lastcommit}}
+          tag: ${{ matrix.name }}_${{env.mobile_lastcommit}}
+          token: ${{ secrets.PAT }}
+          allowUpdates: true
+          removeArtifacts: true
+          artifacts: |
+            upload/*.apk
