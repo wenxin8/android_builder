@@ -5,3 +5,8 @@
 [《更新慢、弃坑了？实现 Android 应用自给自足：GitHub Actions 编译实例》](https://sspai.com/post/70427)
 
 如果这篇文章帮到了你，不妨回来点个赞。
+
+[q215613905 / TVBoxOS](https://github.com/q215613905/TVBoxOS)    
+[takagen99 / Box](https://github.com/takagen99/Box)    
+[FongMi / TV](https://github.com/FongMi/TV)    
+
