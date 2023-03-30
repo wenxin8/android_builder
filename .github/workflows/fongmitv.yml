@@ -116,3 +116,15 @@ jobs:
         with:
           name: ${{ matrix.name }}_${{env.TIMESTAMP}}
           path: upload/*.apk
+      
+      - name: Release and Upload Assets
+        if: ${{true}}    
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ matrix.name }}_${{env.$mobile_lastcommit}}
+          tag: ${{ matrix.name }}_${{env.$mobile_lastcommit}}
+          token: ${{ secrets.PAT }}
+          allowUpdates: true
+          removeArtifacts: true
+          artifacts: |
+            releaseapk/*.apk
