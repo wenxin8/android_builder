@@ -80,13 +80,13 @@ jobs:
           git fetch origin
           git checkout kitkat
           back_lastcommit=$( git log -1 --pretty=format:%ci  release/leanback.apk)  #获取指定时区下的最新提交时间戳2023-03-29 19:14:27 +0800
-          echo "leanback.apk 的最新提交时间： $leanback_lastcommit"
+          echo "leanback.apk 的最新提交时间： $lback_lastcommit"
           back_lastcommit=$(date --date="$back_lastcommit" +'%Y%m%d-%H%M')        
-          echo "back_lastcommit 格式化时间: $leanback_lastcommit 添加到环境变量"
+          echo "back_lastcommit 格式化时间: $back_lastcommit "
           
     
           echo "back_lastcommit=$back_lastcommit" >> $GITHUB_ENV
-          echo "back_lastcommit: $leanback_lastcommit 添加到环境变量"
+          echo "back_lastcommit: $back_lastcommit 添加到环境变量"
           cd ${{ github.workspace }}
           mv project/release/leanback.apk upload/leanback_${{env.back_lastcommit}}.apk
           
