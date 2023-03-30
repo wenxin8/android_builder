@@ -127,4 +127,4 @@ jobs:
           allowUpdates: true
           removeArtifacts: true
           artifacts: |
-            releaseapk/*.apk
+            upload/*.apk
