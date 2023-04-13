@@ -26,6 +26,11 @@ time.sleep(10)
 driver.save_screenshot('screenshot.png')
 qrcode_image = Image.open('screenshot.png')
 qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+
+# 将 qrcode_info 写入到文本文件
+with open('qrcode.txt', 'w', encoding='utf-8') as f:
+    f.write(qrcode_info)
+
 print(qrcode_info)
 
 
