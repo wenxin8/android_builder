@@ -8,6 +8,8 @@ driver.get("https://www.google.com")
 
 time.sleep(8)
 driver.save_screenshot('screenshot.png')
-
+qrcode_image = Image.open('screenshot.png')
+qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+print(qrcode_info)
 # 关闭浏览器并退出
 driver.quit()
