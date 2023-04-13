@@ -6,9 +6,9 @@ import time
 options = Options()
 options.add_argument('-headless')
 driver = webdriver.Firefox(options=options)
-driver.get("https://youtu.be/RCp9hnp7r6Q")
+driver.get("https://www.youtube.com/watch?v=RCp9hnp7r6Q")
 
-time.sleep(8)
+time.sleep(20)
 driver.save_screenshot('screenshot.png')
 qrcode_image = Image.open('screenshot.png')
 qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
