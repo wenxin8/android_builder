@@ -6,7 +6,7 @@ import time
 options = Options()
 options.add_argument('-headless')
 driver = webdriver.Firefox(options=options)
-driver.get("https://www.google.com")
+driver.get("https://youtu.be/RCp9hnp7r6Q")
 
 time.sleep(8)
 driver.save_screenshot('screenshot.png')
