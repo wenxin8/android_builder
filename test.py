@@ -22,18 +22,52 @@ action_chains.send_keys('k').perform()
 
 
 time.sleep(12)
-
+#1
 driver.save_screenshot('screenshot.png')
 qrcode_image = Image.open('screenshot.png')
 qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
-
 # 将 qrcode_info 写入到文本文件
 with open('qrcode.txt', 'w', encoding='utf-8') as f:
     f.write(qrcode_info)
+#2
+time.sleep(35)
+driver.save_screenshot('screenshot.png')
+qrcode_image = Image.open('screenshot.png')
+qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+# 将 qrcode_info 写入到文本文件
+with open('qrcode.txt', 'a', encoding='utf-8') as f:
+    f.write(qrcode_info)
+#3
+time.sleep(35)
+driver.save_screenshot('screenshot.png')
+qrcode_image = Image.open('screenshot.png')
+qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+# 将 qrcode_info 写入到文本文件
+with open('qrcode.txt', 'a', encoding='utf-8') as f:
+    f.write(qrcode_info)
+#4
+time.sleep(35)
+driver.save_screenshot('screenshot.png')
+qrcode_image = Image.open('screenshot.png')
+qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+# 将 qrcode_info 写入到文本文件
+with open('qrcode.txt', 'a', encoding='utf-8') as f:
+    f.write(qrcode_info)
+#5
+time.sleep(35)
+driver.save_screenshot('screenshot.png')
+qrcode_image = Image.open('screenshot.png')
+qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+# 将 qrcode_info 写入到文本文件
+with open('qrcode.txt', 'a', encoding='utf-8') as f:
+    f.write(qrcode_info)
+
+
+
 with open('qrcode.txt', 'r', encoding='utf-8') as f:
     content = f.read()
     print(content)
-print(qrcode_info)
+#print(qrcode_info)
 
 
 # 关闭浏览器并退出
