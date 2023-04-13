@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.firefox.options import Options
+
 from PIL import Image
 from pyzbar.pyzbar import decode
 import time
@@ -13,10 +14,10 @@ driver = webdriver.Firefox(options=options)
 driver.get("https://www.youtube.com/watch?v=RCp9hnp7r6Q")
 
 time.sleep(10)
-player = driver.find_element_by_xpath('//*[@id="movie_player"]/div[1]/video')
+
 
 action_chains = ActionChains(driver)
-action_chains.move_to_element(player).perform()
+
 action_chains.send_keys('k').perform()
 
 
