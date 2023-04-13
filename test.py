@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from PIL import Image
 import time
 options = Options()
 options.add_argument('-headless')
