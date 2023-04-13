@@ -1,18 +1,21 @@
-import requests
-from PIL import Image
-from io import BytesIO
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
-# 获取网页内容
-url = "https://www.youtube.com/watch?v=RCp9hnp7r6Q"
-response = requests.get(url)
+# 创建 Chrome 浏览器 Headless 实例
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--disable-gpu')  # 禁用 GPU 加速
+driver = webdriver.Chrome(chrome_options=chrome_options)
 
-# 将网页内容转为二进制流
-stream = BytesIO(response.content)
+# 创建 Firefox 浏览器 Headless 实例
+firefox_options = FirefoxOptions()
+firefox_options.add_argument('-headless')  # 注意这里是单破折号
+driver = webdriver.Firefox(firefox_options=firefox_options)
 
-# 打开图片并创建 Image 对象
-img = Image.open(stream)
+# 访问目标网页并保存截图
+driver.get('https://www.example.com')
+driver.save_screenshot('screenshot.png')
 
-# 裁剪、缩放等操作（可选）
-
-# 保存图片
-img.save("screenshot.png")
+# 关闭浏览器并退出
+driver.quit()
