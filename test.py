@@ -10,13 +10,11 @@ driver = webdriver.Firefox(options=options)
 driver.get("https://www.youtube.com/watch?v=RCp9hnp7r6Q")
 
 time.sleep(10)
+player = driver.find_element_by_xpath('//*[@id="movie_player"]/div[1]/video')
 
-# 点击播放按钮
-# 创建 ActionChains 对象
 action_chains = ActionChains(driver)
-
-# 使用键盘快捷键 k 控制视频播放
-action_chains.move_to_element(player).send_keys('k').perform()
+action_chains.move_to_element(player).perform()
+action_chains.send_keys('k').perform()
 
 
 time.sleep(10)
