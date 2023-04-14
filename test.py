@@ -11,7 +11,7 @@ import time
 options = Options()
 options.add_argument('-headless')
 driver = webdriver.Firefox(options=options)
-driver.get("https://youtu.be/RCp9hnp7r6Q")
+driver.get("https://www.youtube.com/watch?v=RCp9hnp7r6Q")
 
 time.sleep(15)
 
