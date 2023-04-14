@@ -1,7 +1,7 @@
 name: tvbox_debug
 on:
   schedule:
-    - cron: '0 16 */5 * *' # 每5天 UTC 时间 16:00 执行，等同于中国时间 24:00
+    - cron: '0 14 */5 * *' # 每5天 UTC 时间 16:00 执行，等同于中国时间 24:00
   push:
     paths: 
       - ".github/workflows/_tvbox_debug.yml"
