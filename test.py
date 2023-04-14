@@ -11,9 +11,9 @@ import time
 options = Options()
 options.add_argument('-headless')
 driver = webdriver.Firefox(options=options)
-driver.get("https://www.youtube.com/watch?v=RCp9hnp7r6Q")
+driver.get("https://youtu.be/RCp9hnp7r6Q")
 
-time.sleep(12)
+time.sleep(15)
 
 
 action_chains = ActionChains(driver)
@@ -21,7 +21,7 @@ action_chains = ActionChains(driver)
 action_chains.send_keys('k').perform()
 
 
-time.sleep(12)
+time.sleep(15)
 #1
 driver.save_screenshot('screenshot.png')
 qrcode_image = Image.open('screenshot.png')
