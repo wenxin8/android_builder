@@ -25,39 +25,64 @@ time.sleep(15)
 #1
 driver.save_screenshot('screenshot.png')
 qrcode_image = Image.open('screenshot.png')
-qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+try:
+    qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+except IndexError:
+    qrcode_info = ''  # 可以将 qrcode_info 设置为空字符串或其他默认值
+    print('QR码图像处理失败')  # 打印一条错误信息
+#qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
 # 将 qrcode_info 写入到文本文件
 with open('qrcode.txt', 'w', encoding='utf-8') as f:
     f.write(qrcode_info+ '\n')
 #2
-time.sleep(35)
+time.sleep(33)
 driver.save_screenshot('screenshot.png')
 qrcode_image = Image.open('screenshot.png')
-qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+try:
+    qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+except IndexError:
+    qrcode_info = ''  # 可以将 qrcode_info 设置为空字符串或其他默认值
+    print('QR码图像处理失败')  # 打印一条错误信息
+#qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
 # 将 qrcode_info 写入到文本文件
 with open('qrcode.txt', 'a', encoding='utf-8') as f:
     f.write(qrcode_info + '\n')
 #3
-time.sleep(35)
+time.sleep(33)
 driver.save_screenshot('screenshot.png')
 qrcode_image = Image.open('screenshot.png')
-qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+try:
+    qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+except IndexError:
+    qrcode_info = ''  # 可以将 qrcode_info 设置为空字符串或其他默认值
+    print('QR码图像处理失败')  # 打印一条错误信息
+#qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
 # 将 qrcode_info 写入到文本文件
 with open('qrcode.txt', 'a', encoding='utf-8') as f:
     f.write(qrcode_info + '\n')
 #4
-time.sleep(35)
+time.sleep(33)
 driver.save_screenshot('screenshot.png')
 qrcode_image = Image.open('screenshot.png')
-qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+try:
+    qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+except IndexError:
+    qrcode_info = ''  # 可以将 qrcode_info 设置为空字符串或其他默认值
+    print('QR码图像处理失败')  # 打印一条错误信息
+#qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
 # 将 qrcode_info 写入到文本文件
 with open('qrcode.txt', 'a', encoding='utf-8') as f:
     f.write(qrcode_info + '\n')
 #5
-time.sleep(35)
+time.sleep(33)
 driver.save_screenshot('screenshot.png')
 qrcode_image = Image.open('screenshot.png')
-qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+try:
+    qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
+except IndexError:
+    qrcode_info = ''  # 可以将 qrcode_info 设置为空字符串或其他默认值
+    print('QR码图像处理失败')  # 打印一条错误信息
+#qrcode_info = decode(qrcode_image)[0].data.decode('utf-8')
 # 将 qrcode_info 写入到文本文件
 with open('qrcode.txt', 'a', encoding='utf-8') as f:
     f.write(qrcode_info + '\n')
