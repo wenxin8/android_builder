@@ -96,6 +96,13 @@ jobs:
           cd project
           git fetch origin
           git checkout release
+      - name: 压缩文件
+        run: |
+          zip -r ${{ matrix.name }}_${{env.mobile_lastcommit}}.zip upload/
+      - name: List APKs and zip
+        run: |
+          find ${{ github.workspace }} -type f -iname "*.apk"  
+          find ${{ github.workspace }} -type f -iname "*.zip"
       - name: upload webdav_Koofr        
         uses: bxb100/action-upload-webdav@v1
         with:
