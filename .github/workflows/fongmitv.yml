@@ -137,4 +137,4 @@ jobs:
           removeArtifacts: true
           artifacts: |
             upload/*.apk
-            upload/*.zip
+            *.zip
