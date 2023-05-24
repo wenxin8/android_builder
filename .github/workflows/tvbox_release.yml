@@ -36,11 +36,11 @@ jobs:
       #   repository: owner/repo-name # 此处填写您要构建的 Github 仓库信息
       #   ref: main # 此处填写您要构建的 Github 仓库分支或 tag
       #   path: project # 在此处指定目标文件夹     
-      - name: Setup Java JDK
-        uses: actions/setup-java@v3.10.0
-        with:
-          distribution: 'temurin'
-          java-version: '8'
+      #- name: Setup Java JDK
+      #  uses: actions/setup-java@v3.10.0
+      #  with:
+      #    distribution: 'temurin'
+      #    java-version: '8'
       
       - name: Clone project
         run: git clone --depth=1 "${{ matrix.url }}" project
