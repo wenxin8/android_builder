@@ -93,7 +93,7 @@ jobs:
         run: |
           if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
-          ./gradlew assembleRelease --stacktrace --build-cache --parallel --daemon --warning-mode all      
+          ./gradlew assembleRelease --build-cache --parallel --daemon --warning-mode all      
          
       - name: List APKs_1
         run: |
